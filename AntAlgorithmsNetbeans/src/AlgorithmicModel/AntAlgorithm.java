@@ -28,7 +28,7 @@ public class AntAlgorithm {
         numAnts = nA;
         ants = new Ant[numAnts];
         for(int i=0; i<numAnts; i++) {
-            ants[i] = new Ant();
+            ants[i] = new Ant(grid);
         }
     }
     
@@ -72,6 +72,12 @@ public class AntAlgorithm {
                 antsToPlace--;
                 count++;
             } 
+        }
+    }
+    
+    public void moveAnts() {
+        for(int i=0; i < numAnts; i++) {
+            ants[i].move();
         }
     }
     
