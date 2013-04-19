@@ -17,11 +17,11 @@ public class AntAlgorithm {
     AntAlgorithm(int gridSize, int numItems, int numAnts) {
         grid = new Grid(gridSize);
         ants = new Ant[numAnts];
-        for (Ant ant : ants)
-            ant = new Ant(grid);
+        for (int i = 0; i < numAnts; ++i)
+            ants[i] = new Ant(grid);
         items = new Item[numItems];
-        for (Item item : items)
-            item = new Item(grid);
+        for (int i = 0; i < numItems; ++i)
+            items[i] = new Item(grid);
         placeAnts(numAnts);
         placeItems(numItems);
     }
