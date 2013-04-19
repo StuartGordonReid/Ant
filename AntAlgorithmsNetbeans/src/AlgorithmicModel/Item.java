@@ -8,35 +8,16 @@ package AlgorithmicModel;
  *
  * @author stuart
  */
-public class Item {
-    
-    int locationX;
-    int locationY;
-    
-    Item() {
-        
-    }
-    
+public class Item extends GridObject {
+
+    Grid g;
+
     Item(int x, int y) {
-        locationX = x;
-        locationY = y;
+        super(x, y, "I");
     }
 
-    public int getLocationX() {
-        return locationX;
+    Item(Grid g) {
+        super(g);
+        this.objectType = "I";
     }
-
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
-    }
-
-    public int getLocationY() {
-        return locationY;
-    }
-
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }
-    
-    
 }

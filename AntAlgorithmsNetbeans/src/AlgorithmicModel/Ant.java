@@ -8,57 +8,71 @@ package AlgorithmicModel;
  *
  * @author stuart
  */
-public class Ant {
-    
-    Grid grid;
-    int locationX;
-    int locationY;
+public class Ant extends GridObject {
     
     Ant(Grid g) {
-        grid = g;
+        super(g);
+        this.objectType = "A";
     }
     
     Ant(int x, int y) {
+        super(x,y,"A");
         locationX = x;
         locationY = y;
     }
-    
+
     public void move() {
-        int new_locationY = locationY;
-        int new_locationX = locationX;
-        
-        double rand = Math.random();//Up         Down                 Left   Right
-        int direction = rand < 0.25 ? 1 : rand < 0.5 ? -1 : rand < 0.75 ? -1 : 1;
-        
-        if(rand > 0.5) {
-            new_locationX += direction;
-        } else {
-            new_locationY += direction;
+        int new_locationX = 0;
+        int new_locationY = 0;
+        boolean validMove = false;
+
+        while (validMove == false) {
+            new_locationX = new_locationY = 0;
+            int chooser = (int)(1 + Math.random() * 4);
+            System.out.println(chooser);
+            System.out.println(locationX + ":" + locationY);
+            switch (chooser) {
+                case 1: // Move Up 1
+                    new_locationY = this.locationY + 1;
+                    new_locationX = this.locationX;
+                    break;
+                case 2: // Move Down 1
+                    new_locationY = this.locationY - 1;
+                    new_locationX = this.locationX;
+                    break;
+                case 3: // Move Right 1
+                    new_locationY = this.locationY;
+                    new_locationX = this.locationX + 1;
+                    break;
+                case 4: // Move left 1
+                    new_locationY = this.locationY;
+                    new_locationX = this.locationX - 1;
+                    break;
+            }
+            validMove = validMove(new_locationX, new_locationY);
         }
+
+        grid.getGrid()[locationX][locationY] = new GridObject(grid);
+        grid.getGrid()[new_locationX][new_locationY] = this;
         
-        if(grid.validMove(new_locationX, new_locationY)) {
-            grid.placeObject(null, locationX, locationX);
-            grid.placeObject(this, new_locationX, new_locationX);
-        } else {
-            this.move();
+        this.locationX = new_locationX;
+        this.locationY = new_locationY;
+    }
+
+    public boolean validMove(int xCoord, int yCoord) {
+        boolean valid = true;
+        if (xCoord < 0) {
+            valid = false;
         }
+        if (yCoord < 0) {
+            valid = false;
+        }
+        if (xCoord >= grid.getGridSize()) {
+            valid = false;
+        }
+        if (yCoord >= grid.getGridSize()) {
+            valid = false;
+        }
+        return valid;
     }
-
-    public int getLocationX() {
-        return locationX;
-    }
-
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
-    }
-
-    public int getLocationY() {
-        return locationY;
-    }
-
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
-    }
-    
-    
 }

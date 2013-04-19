@@ -10,43 +10,54 @@ package AlgorithmicModel;
  */
 public class Grid {
 
-    Object[][] grid;
-    int gridSize;
+    private GridObject[][] grid;
+    private int gridSize;
 
     Grid(int gS) {
         gridSize = gS;
-        grid = new Object[gridSize][gridSize];
-    }
-
-    public void placeObject(Object obj, int xCoord, int yCoord) {
-        grid[xCoord][yCoord] = obj;
+        grid = new GridObject[gridSize][gridSize];
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                grid[i][j] = new GridObject(this);
+            }
+        }
     }
 
     public String getObjectType(int xCoord, int yCoord) {
         try {
-            return "" + grid[xCoord][yCoord].getClass();
-        } catch (ArrayIndexOutOfBoundsException oobe) {
-            System.out.println("Array out of bounds exception");
-            return "Error";
-        } catch (Exception err) {
-            return "Error";
+            String type = grid[xCoord][yCoord].getObjectType();
+            return type;
+        } catch (Exception e) {
+            return "E";
         }
     }
 
-    public boolean validMove(int xCoord, int yCoord) {
-        boolean valid = true;
-        if (xCoord < 0) {
-            valid = false;
+    public void printGrid() {
+        for (int x = 0; x < gridSize; x++) {
+            System.out.println("");
+            for (int y = 0; y < gridSize; y++) {
+                if(grid[x][y].getObjectType().equals("E")) {
+                    System.out.print("." + " ");
+                } else {
+                    System.out.print(grid[x][y].getObjectType() + " ");
+                }
+            }
         }
-        if (yCoord < 0) {
-            valid = false;
-        }
-        if (xCoord >= gridSize) {
-            valid = false;
-        }
-        if (yCoord >= gridSize) {
-            valid = false;
-        }
-        return valid;
+    }
+
+    public Object[][] getGrid() {
+        return grid;
+    }
+
+    public void setGrid(GridObject[][] grid) {
+        this.grid = grid;
+    }
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public void setGridSize(int gridSize) {
+        this.gridSize = gridSize;
     }
 }
