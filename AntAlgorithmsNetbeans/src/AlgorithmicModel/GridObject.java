@@ -10,38 +10,38 @@ package AlgorithmicModel;
  */
 public class GridObject {
 
-    int locationX;
-    int locationY;
+    int x;
+    int y;
     String objectType;
     Grid grid;
 
     GridObject(Grid g) {
         grid = g;
-        locationX = 0;
-        locationY = 0;
+        x = 0;
+        y = 0;
         objectType = "E";
     }
 
     GridObject(int x, int y, String type) {
-        this.locationX = x;
-        this.locationY = y;
+        this.x = x;
+        this.y = y;
         this.objectType = type;
     }
 
     public int getLocationX() {
-        return locationX;
+        return x;
     }
 
-    public void setLocationX(int locationX) {
-        this.locationX = locationX;
+    public void setLocationX(int x) {
+        this.x = x;
     }
 
     public int getLocationY() {
-        return locationY;
+        return y;
     }
 
-    public void setLocationY(int locationY) {
-        this.locationY = locationY;
+    public void setLocationY(int y) {
+        this.y = y;
     }
 
     public String getObjectType() {
