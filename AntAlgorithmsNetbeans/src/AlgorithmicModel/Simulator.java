@@ -11,11 +11,19 @@ package AlgorithmicModel;
 public class Simulator {
 
     public static void main(String args[]) {
-
-        AntAlgorithm ants = new AntAlgorithm(15, 10, 2);
+        int iterations = 50;
+        AntAlgorithm ants = new AntAlgorithm(10, 50, 15);
+        
         ants.getGrid().printGrid();
-        System.out.println("move");
-        ants.moveAnts();
+        
+        for (int i = 0; i < iterations; ++i){
+            ants.moveAnts();
+            if (i % 1 == 0){
+                ants.getGrid().printGrid();
+                System.out.println();
+            }
+        }
+        
         ants.getGrid().printGrid();
     }
 }

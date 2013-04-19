@@ -33,9 +33,18 @@ public class Grid {
     }
 
     public void printGrid() {
+        if (gridSize <= 10){ 
+            System.out.print("  ");
+            for (int i = 0; i < gridSize; ++i)
+                System.out.print(i + " ");
+        }
         for (int x = 0; x < gridSize; x++) {
             System.out.println("");
             for (int y = 0; y < gridSize; y++) {
+                if (gridSize <= 10){
+                    if (y == 0)
+                        System.out.print(x + " ");
+                }
                 if(grid[x][y].getObjectType().equals("E")) {
                     System.out.print("." + " ");
                 } else {
@@ -43,6 +52,7 @@ public class Grid {
                 }
             }
         }
+        System.out.println();
     }
 
     public Object[][] getGrid() {

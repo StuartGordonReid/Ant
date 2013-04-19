@@ -27,7 +27,7 @@ public class GridObject {
         this.y = y;
         this.objectType = type;
     }
-
+    
     public int getLocationX() {
         return x;
     }
