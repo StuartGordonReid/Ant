@@ -61,7 +61,8 @@ public class DBScan {
 
     public Item getNeighbour(int x, int y, int xOffset, int yOffset) {
         try {
-            if (grid.getObjectType(x + xOffset, y + yOffset).equals("I")) {
+            GridObject gridObject = (GridObject) grid.getGrid()[x + xOffset][y + yOffset];
+            if (gridObject.getObjectType().equals("I")) {
                 return (Item) grid.getGrid()[x + xOffset][y + yOffset];
             } else {
                 return null;

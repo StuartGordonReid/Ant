@@ -17,11 +17,13 @@ public class AntAlgorithm {
     AntAlgorithm(int gridSize, int numItems, int numAnts) {
         grid = new Grid(gridSize);
         ants = new Ant[numAnts];
-        for (int i = 0; i < numAnts; ++i)
+        for (int i = 0; i < numAnts; ++i) {
             ants[i] = new Ant(grid);
+        }
         items = new Item[numItems];
-        for (int i = 0; i < numItems; ++i)
+        for (int i = 0; i < numItems; ++i) {
             items[i] = new Item(grid);
+        }
         placeAnts(numAnts);
         placeItems(numItems);
     }
@@ -61,25 +63,40 @@ public class AntAlgorithm {
     public void setGrid(Grid grid) {
         this.grid = grid;
     }
-    
+
     public void run(int iterations) {
         grid.printGrid();
-        
+
         // for each iteration
-        for (int i = 0; i < iterations; i++){
+        for (int i = 0; i < iterations; i++) {
             // print grid at some resolution
-            if (i % 1 == 0){
-                grid.printGrid();
-                System.out.println();
-            }
+            grid.printGrid();
+            System.out.println();
+
             // for each ant
-            for (int j = 0; j < ants.length; j++){
+            for (int j = 0; j < ants.length; j++) {
                 // get valid move position
                 int[] pos = ants[j].getValidMove();
                 ants[j].move(pos);
             }
         }
-        
-        grid.printGrid();
+    }
+
+    public void run(int iterations, int resolution) {
+        // for each iteration
+        for (int i = 0; i <= iterations; i++) {
+            // print grid at some resolution
+            if (i % resolution == 0) {
+                System.out.println("AFTER "+i+" ITERATIONS:");
+                grid.printGrid();
+                System.out.println();
+            }
+            // for each ant
+            for (int j = 0; j < ants.length; j++) {
+                // get valid move position
+                int[] pos = ants[j].getValidMove();
+                ants[j].move(pos);
+            }
+        }
     }
 }
