@@ -20,4 +20,9 @@ public class Item extends GridObject {
         super(g);
         this.objectType = "I";
     }
+    
+    @Override
+    public String toString(){
+        return x + "," + y;
+    }
 }

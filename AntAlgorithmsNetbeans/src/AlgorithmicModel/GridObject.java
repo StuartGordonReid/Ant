@@ -14,7 +14,7 @@ public class GridObject {
     int y;
     String objectType;
     Grid grid;
-    boolean visited, noise;
+    public int status = 0; //indicates 0 for unvisted, 1 for visited, 2 for noise
 
     GridObject(Grid g) {
         grid = g;

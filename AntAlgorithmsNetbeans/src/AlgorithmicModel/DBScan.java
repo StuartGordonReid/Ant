@@ -5,6 +5,7 @@
 package AlgorithmicModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -33,10 +34,57 @@ public class DBScan {
               C = next cluster
               expandCluster(P, NeighborPts, C, eps, MinPts)
      */
-    public Cluster scanGrid() {
-        Cluster cluster = new Cluster();
-
-        return cluster;
+    public ArrayList<Cluster> scanGrid() {
+        clusters = new ArrayList<Cluster>();
+        GridObject object;
+        
+        // for every position
+        for (int i = 0; i < 2/*grid.getGridSize()*/; ++i){
+            for (int j = 0; j < grid.getGridSize(); ++j){
+                // skip if already visited
+                object = ((GridObject) grid.getGrid()[i][j]);
+                if (object.status == 1)
+                    continue;
+                
+                // mark as visited
+                object.status = 1;
+                
+                // get neighborhood pts if it's an item
+                if (object.objectType.equals("I")){
+                    ArrayList<Item> neighbors = getItemNeighbours((Item) object);
+                    
+                    System.out.println(object.x + "," + object.y + ": " + neighbors);
+                    
+                    // check neighborhood items size
+                    if (neighbors.size() < clusterMin){
+                        // mark P as noise
+                        object.status = 2;
+                    } else {
+                        // new cluster!
+                        Cluster c = new Cluster();
+                        clusters.add(c);
+                        expandCluster(object, neighbors, c);
+                    }
+                }
+                
+                
+//                if (object.objectType.equals("I")){
+//                    Cluster c = new Cluster();
+//                    c.add(object);
+//                    clusters.add(c);
+//                }
+                
+            }
+        }
+        
+        // remove clusters of size 0
+//        Iterator<Cluster> iter = clusters.iterator();
+//        while (iter.hasNext()){
+//            if (iter.next().isEmpty())
+//                iter.remove();
+//        }
+        
+        return clusters;
     }
 
     /*
@@ -51,8 +99,40 @@ public class DBScan {
            if P' is not yet member of any cluster
               add P' to cluster C
      */
-    public Cluster expandCluster(Cluster C) {
-        return C;
+    public Cluster expandCluster(GridObject object, ArrayList<Item> neighbors, Cluster c) {
+        // add item to cluster
+        c.add(object);
+        
+        Iterator iter = neighbors.iterator();
+        while (iter.hasNext()){
+            Item item = (Item) iter.next();
+            
+            // if item is not visited
+            if (item.status != 1){
+                // mark visited
+                item.status = 1;
+                // get neighbors of neighbor
+                ArrayList<Item> new_neighbors = getItemNeighbours(item);
+                
+                // if sizeof(NeighborPts') >= MinPts
+                if (new_neighbors.size() >= clusterMin){
+                    // perform a safe removal of elements using iter.remove
+                    Iterator iter2 = neighbors.iterator();
+                    while (iter2.hasNext()){
+                        
+                    }
+                    neighbors.removeAll(new_neighbors);
+                    neighbors.addAll(new_neighbors);
+                }
+            }
+            // if item is not yet a member of any cluster
+            if (isInACluster(item)){
+                // add item to cluster
+                c.add(item);
+            }
+            
+        }
+        return c;
     }
 
     /*   NEIGHBOURS
@@ -66,7 +146,7 @@ public class DBScan {
      * regionQuery(P, eps)
          return all points within P's eps-neighborhood
      */
-    public Item[] getItemNeighbours(Item item) {
+    public ArrayList<Item> getItemNeighbours(Item item) {
         ArrayList<Item> neighbours = new ArrayList();
         int[] xOffsets = {-1, 0, 1};
         int[] yOffsets = {-1, 0, 1};
@@ -80,11 +160,9 @@ public class DBScan {
             }
         }
 
-        if (neighbours.size() >= clusterMin - 1) {
-            return neighbours.toArray(new Item[0]);
-        } else {
-            return null;
-        }
+        //remove self from list
+        neighbours.remove(item);
+        return neighbours;
     }
 
     public Item getNeighbour(int x, int y, int xOffset, int yOffset) {
@@ -99,17 +177,45 @@ public class DBScan {
             return null;
         }
     }
+    
+    private boolean isInACluster(Item item){
+        boolean found = false;
+        
+        for (Cluster c : clusters){
+            if (c.list.contains(item)){
+                found = true;
+            }
+        }
+        return found;
+    }
 }
 
 class Cluster {
 
-    ArrayList<Item> cluster;
+    ArrayList<GridObject> list;
+    // item.status == 0 => unvisited
+    // item.status == 1 => visited
+    // item.status == 2 => noise
 
     Cluster() {
-        cluster = new ArrayList();
+        list = new ArrayList();
     }
 
-    public void add(Item x) {
-        cluster.add(x);
+    public void add(GridObject x) {
+        list.add(x);
+    }
+    
+    public boolean isEmpty(){
+        return list.isEmpty();
+    }
+    
+    @Override
+    public String toString(){
+        String s = "";
+        for (int i = 0; i < list.size()-1; ++i){
+            s += list.get(i).toString() + "; ";
+        }
+        s += list.get(list.size() -1).toString();
+        return s + "\n";
     }
 }

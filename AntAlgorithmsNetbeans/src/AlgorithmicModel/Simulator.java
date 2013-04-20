@@ -4,6 +4,8 @@
  */
 package AlgorithmicModel;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author stuart
@@ -18,6 +20,7 @@ public class Simulator {
         int numants = (int) numitems / 10;
         int memorysize = 0;
         int resolution = 1000;
+        int minClusterSize = 3;
 
         System.out.println("Starting simulation with: \n"
                 + "Iterations: " + iterations + "\n"
@@ -28,5 +31,12 @@ public class Simulator {
         
         AntAlgorithm ants = new AntAlgorithm(gridSize, numitems, numants, memorysize);
         ants.run(iterations, resolution);
+        
+        // DBScan the grid
+//        DBScan scan = new DBScan(ants.getGrid(), minClusterSize);
+//        ArrayList<Cluster> clusters = scan.scanGrid();
+//        for (Cluster c : clusters){
+//            System.out.println(c);
+//        }
     }
 }
