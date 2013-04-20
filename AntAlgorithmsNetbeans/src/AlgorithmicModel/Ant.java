@@ -24,8 +24,8 @@ public class Ant extends GridObject {
         this.x = x;
         this.y = y;
     }
-
-    public void move() {
+    
+    public int[] getValidMove() {
         int new_x = 0;
         int new_y = 0;
         boolean validMove = false;
@@ -56,8 +56,48 @@ public class Ant extends GridObject {
             validMove = validMove(new_x, new_y);
         }
 
+        // move is [x,y]
+        int[] move = new int[2];
+        move[0] = new_x;
+        move[1] = new_y;
+        return move;
+    }
+
+    public void move(int[] move) {
+//        int new_x = 0;
+//        int new_y = 0;
+//        boolean validMove = false;
+//
+//        while (validMove == false) {
+//            new_x = new_y = 0;
+//            int chooser = (int)(1 + Math.random() * 4);
+//            //System.out.println(chooser);
+//            //System.out.println(x + ":" + y);
+//            switch (chooser) {
+//                case 1: // Move Up 1
+//                    new_y = this.y + 1;
+//                    new_x = this.x;
+//                    break;
+//                case 2: // Move Down 1
+//                    new_y = this.y - 1;
+//                    new_x = this.x;
+//                    break;
+//                case 3: // Move Right 1
+//                    new_y = this.y;
+//                    new_x = this.x + 1;
+//                    break;
+//                case 4: // Move left 1
+//                    new_y = this.y;
+//                    new_x = this.x - 1;
+//                    break;
+//            }
+//            validMove = validMove(new_x, new_y);
+//        }
+        int new_x = move[0];
+        int new_y = move[1];
+        
         // save position we're going to, before overwriting it!
-        GridObject oldPos = (GridObject) grid.getGrid()[new_x][new_y];
+        //GridObject oldPos = (GridObject) grid.getGrid()[new_x][new_y];
 
         // update "from position" on grid
         if (this.objectType == "B") {
@@ -74,14 +114,14 @@ public class Ant extends GridObject {
         this.y = new_y;
 
         // pickup if moving onto an item
-        if (!gotItem && oldPos.getObjectType().equals("I")) {
-            pickup(x, y);
-        } else if (gotItem) {
-            drop(x, y);
-        }
+//        if (!gotItem && oldPos.getObjectType().equals("I")){
+//            pickup();
+//        } else if (gotItem){
+//            drop();
+//        }
     }
 
-    private void drop(int xCoord, int yCoord) {
+    public void drop() {
         if (newDropProbability() >= Math.random()) {
             // drop item
             this.objectType = "A";
@@ -89,7 +129,7 @@ public class Ant extends GridObject {
         }
     }
 
-    private void pickup(int xCoord, int yCoord) {
+    public void pickup() {
         if (newPickupProbability() >= Math.random()) {
             // pickup item
             System.out.println("Ant " + x + "," + y + " Picked up item");
@@ -159,4 +199,5 @@ public class Ant extends GridObject {
 
         return valid;
     }
+    
 }
