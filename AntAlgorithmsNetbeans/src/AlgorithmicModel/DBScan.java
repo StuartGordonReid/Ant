@@ -21,12 +21,36 @@ public class DBScan {
         clusterMin = c;
     }
 
+    /*
+     *DBSCAN(D, eps, MinPts)
+        C = 0
+        for each unvisited point P in dataset D
+           mark P as visited
+           NeighborPts = regionQuery(P, eps)
+           if sizeof(NeighborPts) < MinPts
+              mark P as NOISE
+           else
+              C = next cluster
+              expandCluster(P, NeighborPts, C, eps, MinPts)
+     */
     public Cluster scanGrid() {
         Cluster cluster = new Cluster();
 
         return cluster;
     }
 
+    /*
+     *expandCluster(P, NeighborPts, C, eps, MinPts)
+        add P to cluster C
+        for each point P' in NeighborPts 
+           if P' is not visited
+              mark P' as visited
+              NeighborPts' = regionQuery(P', eps)
+              if sizeof(NeighborPts') >= MinPts
+                 NeighborPts = NeighborPts joined with NeighborPts'
+           if P' is not yet member of any cluster
+              add P' to cluster C
+     */
     public Cluster expandCluster(Cluster C) {
         return C;
     }
@@ -37,6 +61,10 @@ public class DBScan {
      *     (X-1,Y) |  (X,Y)  | (X+1,Y)
      *   --------------------------------
      *   (X-1,Y-1) | (X,Y-1) | (X+1,Y-1)
+     */
+    /*
+     * regionQuery(P, eps)
+         return all points within P's eps-neighborhood
      */
     public Item[] getItemNeighbours(Item item) {
         ArrayList<Item> neighbours = new ArrayList();
