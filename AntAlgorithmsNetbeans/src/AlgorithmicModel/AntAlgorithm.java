@@ -32,8 +32,8 @@ public class AntAlgorithm {
             int yCoord = (int) (Math.random() * grid.getGridSize());
             if (grid.getObjectType(xCoord, yCoord).equals("E")) {
                 grid.getGrid()[xCoord][yCoord] = ants[i];
-                ants[i].setLocationX(xCoord);
-                ants[i].setLocationY(yCoord);
+                ants[i].setX(xCoord);
+                ants[i].setY(yCoord);
             } else {
                 i--;
             }
@@ -46,8 +46,8 @@ public class AntAlgorithm {
             int yCoord = (int) (Math.random() * grid.getGridSize());
             if (grid.getObjectType(xCoord, yCoord).equals("E")) {
                 grid.getGrid()[xCoord][yCoord] = items[i];
-                items[i].setLocationX(xCoord);
-                items[i].setLocationY(yCoord);
+                items[i].setX(xCoord);
+                items[i].setY(yCoord);
             } else {
                 i--;
             }

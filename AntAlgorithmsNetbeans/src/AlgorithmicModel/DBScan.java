@@ -31,19 +31,30 @@ public class DBScan {
         return C;
     }
 
+    /*   NEIGHBOURS
+     *   (X+1,Y+1) | (X,Y+1) | (X+1,Y+1)
+     *   --------------------------------
+     *     (X-1,Y) |  (X,Y)  | (X+1,Y)
+     *   --------------------------------
+     *   (X-1,Y-1) | (X,Y-1) | (X+1,Y-1)
+     */
     public Item[] getItemNeighbours(Item item) {
         ArrayList<Item> neighbours = new ArrayList();
 
-        /*   NEIGHBOURS
-         *   (X+1,Y+1) | (X,Y+1) | (X+1,Y+1)
-         *   --------------------------------
-         *     (X-1,Y) |  (X,Y)  | (X+1,Y)
-         *   --------------------------------
-         *   (X-1,Y-1) | (X,Y-1) | (X+1,Y-1)
-         */
+        int xCoord = item.getX();
+        int yCoord = item.getY();
 
-        int xCoord = item.getLocationX();
-        int yCoord = item.getLocationY();
+        int[] xOffsets = {-1, 0, 1};
+        int[] yOffsets = {-1, 0, 1};
+
+        for (int i = 0; i < xOffsets.length; i++) {
+            for (int j = 0; j < yOffsets.length; j++) {
+                Item neighbour = getNeighbour(xCoord, yCoord, xOffsets[i], yOffsets[j]);
+                if (neighbour != null) {
+                    neighbours.add(neighbour);
+                }
+            }
+        }
 
         if (neighbours.size() >= clusterMin - 1) {
             return neighbours.toArray(new Item[0]);
