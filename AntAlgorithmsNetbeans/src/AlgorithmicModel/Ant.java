@@ -4,7 +4,7 @@
  */
 package AlgorithmicModel;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -13,16 +13,12 @@ import java.util.ArrayList;
 public class Ant extends GridObject {
 
     public boolean gotItem = false;
-
-    Ant(Grid g) {
+    public AntMemory<GridObject> memory;
+    
+    Ant(Grid g, int antMemorySize) {
         super(g);
         this.objectType = "A";
-    }
-
-    Ant(int x, int y) {
-        super(x, y, "A");
-        this.x = x;
-        this.y = y;
+        this.memory = new AntMemory(antMemorySize);
     }
 
     public int[] getValidMove() {
@@ -122,7 +118,7 @@ public class Ant extends GridObject {
                 //Either pickup item or do nothing
                 double prob_Pickup = newPickupProbability();
                 if (Math.random() < prob_Pickup) {
-                    System.out.println("Ant at "+x+":"+y+" picked up item");
+                    //System.out.println("Ant at "+x+":"+y+" picked up item");
                     this.setObjectType("A");
                     this.gotItem = true;
                     grid.getGrid()[x][y] = this;
@@ -134,7 +130,7 @@ public class Ant extends GridObject {
                 //Either drop item or do nothing
                 double prob_Drop = newDropProbability();
                 if (Math.random() < prob_Drop) {
-                    System.out.println("Ant at "+x+":"+y+" dropped item");
+                    //System.out.println("Ant at "+x+":"+y+" dropped item");
                     this.setObjectType("B");
                     this.gotItem = false;
                     grid.getGrid()[x][y] = this;
@@ -211,5 +207,22 @@ public class Ant extends GridObject {
         }
 
         return valid;
+    }
+    
+    public class AntMemory<E> extends LinkedList<E> {
+        public int size;
+        
+        public AntMemory(int size){
+            this.size = size;
+        }
+        
+        @Override
+        public boolean add(E object){
+            boolean added = super.add(object);
+            while(added && size() > size){
+                super.remove();
+            }
+            return added;
+        }
     }
 }

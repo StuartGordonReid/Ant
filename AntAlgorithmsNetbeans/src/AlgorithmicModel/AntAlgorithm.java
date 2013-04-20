@@ -14,11 +14,11 @@ public class AntAlgorithm {
     private Ant[] ants;
     private Item[] items;
 
-    AntAlgorithm(int gridSize, int numItems, int numAnts) {
+    AntAlgorithm(int gridSize, int numItems, int numAnts, int antMemorySize) {
         grid = new Grid(gridSize);
         ants = new Ant[numAnts];
         for (int i = 0; i < numAnts; ++i)
-            ants[i] = new Ant(grid);
+            ants[i] = new Ant(grid, antMemorySize);
         items = new Item[numItems];
         for (int i = 0; i < numItems; ++i)
             items[i] = new Item(grid);
@@ -64,11 +64,12 @@ public class AntAlgorithm {
     
     public void run(int iterations) {
         grid.printGrid();
+        int resolution = (int) iterations/10;
         
         // for each iteration
         for (int i = 0; i < iterations; i++){
             // print grid at some resolution
-            if (i % 1 == 0){
+            if (i % resolution == 0){
                 grid.printGrid();
                 System.out.println();
             }
