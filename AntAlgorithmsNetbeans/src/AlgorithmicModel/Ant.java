@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class Ant extends GridObject {
 
     public boolean gotItem = false;
-    public AntMemory<GridObject> memory;
+    public AntMemory<Item> memory;
     
     Ant(Grid g, int antMemorySize) {
         super(g);
@@ -93,6 +93,8 @@ public class Ant extends GridObject {
         GridObject oldPosition = (GridObject) grid.getGrid()[x][y];
         if (oldPosition.getObjectType().equals("B")) {
             grid.getGrid()[x][y] = new Item(x, y);
+            Item mem = (Item)grid.getGrid()[x][y];
+            memory.add(mem);
         } else {
             grid.getGrid()[x][y] = new GridObject(x, y, "E");
         }
@@ -207,22 +209,5 @@ public class Ant extends GridObject {
         }
 
         return valid;
-    }
-    
-    public class AntMemory<E> extends LinkedList<E> {
-        public int size;
-        
-        public AntMemory(int size){
-            this.size = size;
-        }
-        
-        @Override
-        public boolean add(E object){
-            boolean added = super.add(object);
-            while(added && size() > size){
-                super.remove();
-            }
-            return added;
-        }
     }
 }
