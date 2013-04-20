@@ -24,7 +24,7 @@ public class Ant extends GridObject {
         this.x = x;
         this.y = y;
     }
-    
+
     public int[] getValidMove() {
         int new_x = 0;
         int new_y = 0;
@@ -63,93 +63,94 @@ public class Ant extends GridObject {
         return move;
     }
 
+    /* Pseudocode:
+     * -------------------------------------------------------------------------
+     * Update old cell
+     * -------------------------------------------------------------------------
+     * If before moving the ant is currently sharing a cell with an item
+     *      Make the cell a new item
+     * Otherwise if the cell only contained an ant before
+     *      Mark the cell as being empty
+     * Update the internal reference of the ant
+     * -------------------------------------------------------------------------
+     * Update new cell
+     * -------------------------------------------------------------------------
+     * If the cell the ant is moving to contains and item
+     *      Move to that cell and mark cell as having both an ant and an item
+     * Otherwise if the cell the ant is moving to is empty
+     *      Move to the cell and mark the cell as having just an ant
+     * -------------------------------------------------------------------------
+     * Perform pickup / drop
+     * -------------------------------------------------------------------------
+     * If the ant is carrying an item
+     *      And if the cell doesn't have an items on it
+     *          Try drop the item
+     * If the ant it not carrying an item
+     *      And if the cell has an item on it
+     *          Try pickup the item
+     */
     public void move(int[] move) {
-//        int new_x = 0;
-//        int new_y = 0;
-//        boolean validMove = false;
-//
-//        while (validMove == false) {
-//            new_x = new_y = 0;
-//            int chooser = (int)(1 + Math.random() * 4);
-//            //System.out.println(chooser);
-//            //System.out.println(x + ":" + y);
-//            switch (chooser) {
-//                case 1: // Move Up 1
-//                    new_y = this.y + 1;
-//                    new_x = this.x;
-//                    break;
-//                case 2: // Move Down 1
-//                    new_y = this.y - 1;
-//                    new_x = this.x;
-//                    break;
-//                case 3: // Move Right 1
-//                    new_y = this.y;
-//                    new_x = this.x + 1;
-//                    break;
-//                case 4: // Move left 1
-//                    new_y = this.y;
-//                    new_x = this.x - 1;
-//                    break;
-//            }
-//            validMove = validMove(new_x, new_y);
-//        }
         int new_x = move[0];
         int new_y = move[1];
-        
-        // save position we're going to, before overwriting it!
-        //GridObject oldPos = (GridObject) grid.getGrid()[new_x][new_y];
 
-        // update "from position" on grid
-        if (this.objectType == "B") {
-            //ant leaves an item behind
-            grid.getGrid()[x][y] = new Item(grid);
+        //If moving on from cell with both ant and item leave item and move ant
+        GridObject oldPosition = (GridObject) grid.getGrid()[x][y];
+        if (oldPosition.getObjectType().equals("B")) {
+            grid.getGrid()[x][y] = new Item(x, y);
         } else {
-            grid.getGrid()[x][y] = new GridObject(grid);
+            grid.getGrid()[x][y] = new GridObject(x, y, "E");
         }
-        // update "to position" on grid
-        grid.getGrid()[new_x][new_y] = this;
 
-        // update ants internal position
+        //Update the ants internal reference
         this.x = new_x;
         this.y = new_y;
 
-        // pickup if moving onto an item
-//        if (!gotItem && oldPos.getObjectType().equals("I")){
-//            pickup();
-//        } else if (gotItem){
-//            drop();
-//        }
-    }
-
-    public void drop() {
-        if (newDropProbability() >= Math.random()) {
-            // drop item
-            this.objectType = "A";
-            this.gotItem = false;
-        }
-    }
-
-    public void pickup() {
-        if (newPickupProbability() >= Math.random()) {
-            // pickup item
-            System.out.println("Ant " + x + "," + y + " Picked up item");
-            gotItem = true;
+        GridObject newPosition = (GridObject) grid.getGrid()[x][y];
+        if (newPosition.getObjectType().equals("I")) {
+            //There was an item at the block now there is an ant and an item there
+            this.setObjectType("B");
+            grid.getGrid()[x][y] = this;
         } else {
-            // update grid position!
-            this.objectType = "B";
+            //There was no item at the block now there is an ant there
+            this.setObjectType("A");
+            grid.getGrid()[x][y] = this;
+        }
+
+        if (this.gotItem == false) {
+            //Make sure there is an item there to pickup
+            if (this.getObjectType().equals("B")) {
+                //Either pickup item or do nothing
+                double prob_Pickup = newPickupProbability();
+                if (Math.random() < prob_Pickup) {
+                    this.setObjectType("A");
+                    this.gotItem = true;
+                    grid.getGrid()[x][y] = this;
+                }
+            }
+        } else {
+            //Make sure there isn't already an item there
+            if (this.getObjectType().equals("A")) {
+                //Either drop item or do nothing
+                double prob_Drop = newPickupProbability();
+                if (Math.random() < prob_Drop) {
+                    this.setObjectType("B");
+                    this.gotItem = false;
+                    grid.getGrid()[x][y] = this;
+                }
+            }
         }
     }
 
     private double newPickupProbability() {
-        // calculate pickup probability
-        int denominator = getItemsSurroundingAnt();
-        return 0.7;
+        //int lamda = getItemsSurroundingAnt();
+        //return 1/(1+lamda);
+        return 0.5;
     }
 
     private double newDropProbability() {
-        // calculate drop probability
-        int denominator = getItemsSurroundingAnt();
-        return 5.0;
+        //int lamda = getItemsSurroundingAnt();
+        //return lamda/(1+lamda);
+        return 0.5;
     }
 
     public int getItemsSurroundingAnt() {
@@ -199,5 +200,4 @@ public class Ant extends GridObject {
 
         return valid;
     }
-    
 }
