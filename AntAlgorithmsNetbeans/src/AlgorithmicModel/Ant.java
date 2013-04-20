@@ -4,21 +4,23 @@
  */
 package AlgorithmicModel;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author stuart
  */
 public class Ant extends GridObject {
-    
-    public boolean gotItem   = false;
-    
+
+    public boolean gotItem = false;
+
     Ant(Grid g) {
         super(g);
         this.objectType = "A";
     }
-    
+
     Ant(int x, int y) {
-        super(x,y,"A");
+        super(x, y, "A");
         this.x = x;
         this.y = y;
     }
@@ -30,7 +32,7 @@ public class Ant extends GridObject {
 
         while (validMove == false) {
             new_x = new_y = 0;
-            int chooser = (int)(1 + Math.random() * 4);
+            int chooser = (int) (1 + Math.random() * 4);
             //System.out.println(chooser);
             //System.out.println(x + ":" + y);
             switch (chooser) {
@@ -53,12 +55,12 @@ public class Ant extends GridObject {
             }
             validMove = validMove(new_x, new_y);
         }
-        
+
         // save position we're going to, before overwriting it!
         GridObject oldPos = (GridObject) grid.getGrid()[new_x][new_y];
-        
+
         // update "from position" on grid
-        if (this.objectType == "B"){
+        if (this.objectType == "B") {
             //ant leaves an item behind
             grid.getGrid()[x][y] = new Item(grid);
         } else {
@@ -66,29 +68,29 @@ public class Ant extends GridObject {
         }
         // update "to position" on grid
         grid.getGrid()[new_x][new_y] = this;
-        
+
         // update ants internal position
         this.x = new_x;
         this.y = new_y;
-        
+
         // pickup if moving onto an item
-        if (!gotItem && oldPos.getObjectType().equals("I")){
+        if (!gotItem && oldPos.getObjectType().equals("I")) {
             pickup(x, y);
-        } else if (gotItem){
+        } else if (gotItem) {
             drop(x, y);
         }
     }
-    
+
     private void drop(int xCoord, int yCoord) {
-        if (newDropProbability() >= Math.random()){
+        if (newDropProbability() >= Math.random()) {
             // drop item
             this.objectType = "A";
             this.gotItem = false;
         }
     }
-    
+
     private void pickup(int xCoord, int yCoord) {
-        if (newPickupProbability() >= Math.random()){
+        if (newPickupProbability() >= Math.random()) {
             // pickup item
             System.out.println("Ant " + x + "," + y + " Picked up item");
             gotItem = true;
@@ -97,15 +99,42 @@ public class Ant extends GridObject {
             this.objectType = "B";
         }
     }
-    
+
     private double newPickupProbability() {
         // calculate pickup probability
+        int denominator = getItemsSurroundingAnt();
         return 0.7;
     }
-    
+
     private double newDropProbability() {
         // calculate drop probability
+        int denominator = getItemsSurroundingAnt();
         return 5.0;
+    }
+
+    public int getItemsSurroundingAnt() {
+        int items = 0;
+        int[] xOffsets = {-1, 0, 1};
+        int[] yOffsets = {-1, 0, 1};
+
+        for (int i = 0; i < xOffsets.length; i++) {
+            for (int j = 0; j < yOffsets.length; j++) {
+                items += getNeighbour(xOffsets[i], yOffsets[j]);
+            }
+        }
+        return items;
+    }
+
+    public int getNeighbour(int xOffset, int yOffset) {
+        try {
+            if (grid.getObjectType(x + xOffset, y + yOffset).equals("I")) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (Exception err) {
+            return 0;
+        }
     }
 
     private boolean validMove(int xCoord, int yCoord) {
@@ -124,9 +153,10 @@ public class Ant extends GridObject {
             valid = false;
         }
         // detect collisions with other ants
-        if (grid.getObjectType(xCoord, yCoord).equals("A") || grid.getObjectType(xCoord, yCoord).equals("B"))
+        if (grid.getObjectType(xCoord, yCoord).equals("A") || grid.getObjectType(xCoord, yCoord).equals("B")) {
             valid = false;
-        
+        }
+
         return valid;
     }
 }

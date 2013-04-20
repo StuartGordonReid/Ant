@@ -40,16 +40,12 @@ public class DBScan {
      */
     public Item[] getItemNeighbours(Item item) {
         ArrayList<Item> neighbours = new ArrayList();
-
-        int xCoord = item.getX();
-        int yCoord = item.getY();
-
         int[] xOffsets = {-1, 0, 1};
         int[] yOffsets = {-1, 0, 1};
 
         for (int i = 0; i < xOffsets.length; i++) {
             for (int j = 0; j < yOffsets.length; j++) {
-                Item neighbour = getNeighbour(xCoord, yCoord, xOffsets[i], yOffsets[j]);
+                Item neighbour = getNeighbour(item.getX(), item.getY(), xOffsets[i], yOffsets[j]);
                 if (neighbour != null) {
                     neighbours.add(neighbour);
                 }
