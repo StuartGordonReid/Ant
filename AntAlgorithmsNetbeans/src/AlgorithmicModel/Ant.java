@@ -122,6 +122,7 @@ public class Ant extends GridObject {
                 //Either pickup item or do nothing
                 double prob_Pickup = newPickupProbability();
                 if (Math.random() < prob_Pickup) {
+                    System.out.println("Ant at "+x+":"+y+" picked up item");
                     this.setObjectType("A");
                     this.gotItem = true;
                     grid.getGrid()[x][y] = this;
@@ -131,8 +132,9 @@ public class Ant extends GridObject {
             //Make sure there isn't already an item there
             if (this.getObjectType().equals("A")) {
                 //Either drop item or do nothing
-                double prob_Drop = newPickupProbability();
+                double prob_Drop = newDropProbability();
                 if (Math.random() < prob_Drop) {
+                    System.out.println("Ant at "+x+":"+y+" dropped item");
                     this.setObjectType("B");
                     this.gotItem = false;
                     grid.getGrid()[x][y] = this;
@@ -142,15 +144,24 @@ public class Ant extends GridObject {
     }
 
     private double newPickupProbability() {
-        //int lamda = getItemsSurroundingAnt();
+        double lamda = getItemsSurroundingAnt();
+        //System.out.println("Number of items around ant " +x+":"+y+" = "+lamda);
+        //System.out.println(lamda);
+        double probability = 1/(1+lamda);
+        return probability;
+        //System.out.println("Probability of pick up: " + probability);
         //return 1/(1+lamda);
-        return 0.5;
+        //return 0.8;
     }
 
     private double newDropProbability() {
-        //int lamda = getItemsSurroundingAnt();
+        double lamda = getItemsSurroundingAnt();
+        //System.out.println("Number of items around ant " +x+":"+y+" = "+lamda);
+        double probability = lamda/(1+lamda);
+        return probability;
+        //System.out.println("Probability of drop: " + probability);
         //return lamda/(1+lamda);
-        return 0.5;
+        //return 0.2;
     }
 
     public int getItemsSurroundingAnt() {
@@ -168,7 +179,8 @@ public class Ant extends GridObject {
 
     public int getNeighbour(int xOffset, int yOffset) {
         try {
-            if (grid.getObjectType(x + xOffset, y + yOffset).equals("I")) {
+            GridObject gridItem = (GridObject)grid.getGrid()[x + xOffset][y + yOffset];
+            if (gridItem.getObjectType().equals("I")) {
                 return 1;
             } else {
                 return 0;
