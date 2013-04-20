@@ -64,11 +64,12 @@ public class AntAlgorithm {
     
     public void run(int iterations) {
         grid.printGrid();
+        int resolution = (int) iterations/10;
         
         // for each iteration
         for (int i = 0; i < iterations; i++){
             // print grid at some resolution
-            if (i % 1 == 0){
+            if (i % resolution == 0){
                 grid.printGrid();
                 System.out.println();
             }

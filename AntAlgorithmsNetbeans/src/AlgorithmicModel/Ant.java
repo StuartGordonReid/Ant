@@ -122,7 +122,7 @@ public class Ant extends GridObject {
                 //Either pickup item or do nothing
                 double prob_Pickup = newPickupProbability();
                 if (Math.random() < prob_Pickup) {
-                    System.out.println("Ant at "+x+":"+y+" picked up item");
+                    //System.out.println("Ant at "+x+":"+y+" picked up item");
                     this.setObjectType("A");
                     this.gotItem = true;
                     grid.getGrid()[x][y] = this;
@@ -134,7 +134,7 @@ public class Ant extends GridObject {
                 //Either drop item or do nothing
                 double prob_Drop = newDropProbability();
                 if (Math.random() < prob_Drop) {
-                    System.out.println("Ant at "+x+":"+y+" dropped item");
+                    //System.out.println("Ant at "+x+":"+y+" dropped item");
                     this.setObjectType("B");
                     this.gotItem = false;
                     grid.getGrid()[x][y] = this;
