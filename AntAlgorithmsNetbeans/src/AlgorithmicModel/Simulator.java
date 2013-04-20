@@ -14,7 +14,7 @@ public class Simulator {
 
     public static void main(String args[]) {
 
-        int gridSize = 50;
+        int gridSize = 20;
         int iterations = 40000;
         int numitems = (int) (gridSize * gridSize) / 20;
         int numants = (int) numitems / 10;
@@ -32,11 +32,11 @@ public class Simulator {
         AntAlgorithm ants = new AntAlgorithm(gridSize, numitems, numants, memorysize);
         ants.run(iterations, resolution);
         
-        // DBScan the grid
-//        DBScan scan = new DBScan(ants.getGrid(), minClusterSize);
-//        ArrayList<Cluster> clusters = scan.scanGrid();
-//        for (Cluster c : clusters){
-//            System.out.println(c);
-//        }
+         //DBScan the grid
+        DBScan scan = new DBScan(ants.getGrid(), minClusterSize);
+        ArrayList<Cluster> clusters = scan.scanGrid();
+        for (Cluster c : clusters){
+            System.out.println(c);
+        }
     }
 }
