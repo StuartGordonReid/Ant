@@ -27,37 +27,57 @@ public class SmartAnt extends Ant {
         while (validMove == false) {
             double bias = Math.random();
             counter++;
-            if (this.gotItem == true && bias <= 0.6 && memory.size() > 0 && counter<=2) {
+            if (this.gotItem == true && bias <= 0.5 && memory.size() > 0 && counter <= 2) {
                 Item closest = memory.get(0);
                 for (int i = 1; i < memory.size(); i++) {
                     closest = closer(closest, memory.get(i));
                 }
 
-                int xDiff = Math.abs(this.x - closest.getX());
-                int yDiff = Math.abs(this.y - closest.getY());
+                int xDiff = Math.max((this.x - closest.getX()), (closest.getX() - this.x));
+                int yDiff = Math.max((this.y - closest.getY()), (closest.getY() - this.y));
 
-                if (xDiff < yDiff) { // move up or down
-                    if (closest.getY() > y) {
-                        new_y = this.y + 1;
-                        new_x = this.x;
-                    } else {
-                        new_y = this.y - 1;
-                        new_x = this.x;
+                int choice = (int) Math.random();
+                if (choice == 1) {
+                    if (xDiff > yDiff) { // move up or down
+                        if (closest.getY() > y) {
+                            new_y = this.y + 1;
+                            new_x = this.x;
+                        } else {
+                            new_y = this.y - 1;
+                            new_x = this.x;
+                        }
+                    } else { //move left or right
+                        if (closest.getX() > x) {
+                            new_y = this.y;
+                            new_x = this.x + 1;
+                        } else {
+                            new_y = this.y;
+                            new_x = this.x - 1;
+                        }
                     }
-                } else { //move left or right
-                    if (closest.getX() > x) {
-                        new_y = this.y;
-                        new_x = this.x + 1;
-                    } else {
-                        new_y = this.y;
-                        new_x = this.x - 1;
+                } else {
+                     if (xDiff >= yDiff) { // move up or down
+                        if (closest.getY() > y) {
+                            new_y = this.y + 1;
+                            new_x = this.x;
+                        } else {
+                            new_y = this.y - 1;
+                            new_x = this.x;
+                        }
+                    } else { //move left or right
+                        if (closest.getX() > x) {
+                            new_y = this.y;
+                            new_x = this.x + 1;
+                        } else {
+                            new_y = this.y;
+                            new_x = this.x - 1;
+                        }
                     }
                 }
                 validMove = validMove(new_x, new_y);
 
             } else {
-                new_x = new_y = 0;
-                int chooser = (int) (1 + Math.random() * 4);
+                int chooser = (int) (1 + Math.random() * 8);
                 //System.out.println(chooser);
                 //System.out.println(x + ":" + y);
                 switch (chooser) {
@@ -77,6 +97,22 @@ public class SmartAnt extends Ant {
                         new_y = this.y;
                         new_x = this.x - 1;
                         break;
+                    case 5:
+                        new_y = this.y + 1;
+                        new_x = this.x + 1;
+                        break;
+                    case 6:
+                        new_y = this.y + 1;
+                        new_x = this.x - 1;
+                        break;
+                    case 7:
+                        new_y = this.y - 1;
+                        new_x = this.x + 1;
+                        break;
+                    case 8:
+                        new_y = this.y - 1;
+                        new_x = this.x - 1;
+                        break;
                 }
                 validMove = validMove(new_x, new_y);
             }
@@ -90,18 +126,18 @@ public class SmartAnt extends Ant {
 
     //Euclidian distance of two objects in memory
     public Item closer(Item one, Item two) {
-        
+
         //RANDOM
-        
+
         /* double random = Math.random();
-        if(random > 0.5) {
-            return one;
-        } else {
-            return two;
-        }*/
-        
+         if(random > 0.5) {
+         return one;
+         } else {
+         return two;
+         }*/
+
         //EUCLIDIAN
-        
+
         int x1 = one.getX();
         int y1 = one.getY();
         double diff1 = Math.sqrt(Math.pow((this.x - x1), 2.0) + Math.pow((this.y - y1), 2.0));

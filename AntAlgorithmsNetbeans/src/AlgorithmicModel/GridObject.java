@@ -18,8 +18,6 @@ public class GridObject {
 
     GridObject(Grid g) {
         grid = g;
-        x = 0;
-        y = 0;
         objectType = "E";
     }
 

@@ -14,7 +14,7 @@ public class Ant extends GridObject {
 
     public boolean gotItem = false;
     public AntMemory memory;
-    
+
     Ant(Grid g, int antMemorySize) {
         super(g);
         this.objectType = "A";
@@ -28,7 +28,7 @@ public class Ant extends GridObject {
 
         while (validMove == false) {
             new_x = new_y = 0;
-            int chooser = (int) (1 + Math.random() * 4);
+            int chooser = (int) (1 + Math.random() * 8);
             //System.out.println(chooser);
             //System.out.println(x + ":" + y);
             switch (chooser) {
@@ -46,6 +46,22 @@ public class Ant extends GridObject {
                     break;
                 case 4: // Move left 1
                     new_y = this.y;
+                    new_x = this.x - 1;
+                    break;
+                case 5:
+                    new_y = this.y + 1;
+                    new_x = this.x + 1;
+                    break;
+                case 6:
+                    new_y = this.y + 1;
+                    new_x = this.x - 1;
+                    break;
+                case 7:
+                    new_y = this.y - 1;
+                    new_x = this.x + 1;
+                    break;
+                case 8:
+                    new_y = this.y - 1;
                     new_x = this.x - 1;
                     break;
             }
@@ -93,7 +109,7 @@ public class Ant extends GridObject {
         GridObject oldPosition = (GridObject) grid.getGrid()[x][y];
         if (oldPosition.getObjectType().equals("B")) {
             grid.getGrid()[x][y] = new Item(x, y);
-            Item mem = (Item)grid.getGrid()[x][y];
+            Item mem = (Item) grid.getGrid()[x][y];
             memory.add(mem);
         } else {
             grid.getGrid()[x][y] = new GridObject(x, y, "E");
@@ -145,7 +161,7 @@ public class Ant extends GridObject {
         double lamda = getItemsSurroundingAnt();
         //System.out.println("Number of items around ant " +x+":"+y+" = "+lamda);
         //System.out.println(lamda);
-        double probability = 1/(1+lamda);
+        double probability = 1 / (1 + lamda);
         return probability;
         //System.out.println("Probability of pick up: " + probability);
         //return 1/(1+lamda);
@@ -155,7 +171,7 @@ public class Ant extends GridObject {
     private double newDropProbability() {
         double lamda = getItemsSurroundingAnt();
         //System.out.println("Number of items around ant " +x+":"+y+" = "+lamda);
-        double probability = lamda/(1+lamda);
+        double probability = lamda / (1 + lamda);
         return probability;
         //System.out.println("Probability of drop: " + probability);
         //return lamda/(1+lamda);
@@ -177,7 +193,7 @@ public class Ant extends GridObject {
 
     public int getNeighbour(int xOffset, int yOffset) {
         try {
-            GridObject gridItem = (GridObject)grid.getGrid()[x + xOffset][y + yOffset];
+            GridObject gridItem = (GridObject) grid.getGrid()[x + xOffset][y + yOffset];
             if (gridItem.getObjectType().equals("I")) {
                 return 1;
             } else {
