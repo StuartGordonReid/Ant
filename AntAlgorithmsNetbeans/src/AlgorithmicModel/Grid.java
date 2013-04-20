@@ -32,12 +32,22 @@ public class Grid {
         }
     }
 
+    public String printStringGrid() {
+        String output = "";
+        for (int x = 0; x < gridSize; x++) {
+            output+="\n";
+            for (int y = 0; y < gridSize; y++) {
+                if(grid[x][y].getObjectType().equals("E")) {
+                    output += ". ";
+                } else {
+                    output += grid[x][y].getObjectType() + " ";
+                }
+            }
+        }        
+        return output;
+    }
+    
     public void printGrid() {
-        if (gridSize <= 10){ 
-            System.out.print("  ");
-            for (int i = 0; i < gridSize; ++i)
-                System.out.print(i + " ");
-        }
         for (int x = 0; x < gridSize; x++) {
             System.out.println("");
             for (int y = 0; y < gridSize; y++) {

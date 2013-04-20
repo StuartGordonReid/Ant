@@ -96,9 +96,9 @@ public class AntAlgorithm {
         for (int i = 0; i <= iterations; i++) {
             // print grid at some resolution
             if (i % resolution == 0) {
-                System.out.println("AFTER "+i+" ITERATIONS:");
-                grid.printGrid();
-                System.out.println();
+                //System.out.println("AFTER "+i+" ITERATIONS:");
+                //grid.printGrid();
+                //System.out.println();
             }
             // for each ant
             for (int j = 0; j < ants.length; j++) {
