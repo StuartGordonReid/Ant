@@ -16,9 +16,16 @@ public class AntAlgorithm {
 
     AntAlgorithm(int gridSize, int numItems, int numAnts, int antMemorySize) {
         grid = new Grid(gridSize);
-        ants = new Ant[numAnts];
-        for (int i = 0; i < numAnts; ++i) {
-            ants[i] = new Ant(grid, antMemorySize);
+        if(antMemorySize > 0) {
+            ants = new SmartAnt[numAnts];
+            for (int i = 0; i < numAnts; ++i) {
+                ants[i] = new SmartAnt(grid, antMemorySize);
+            }
+        } else {
+            ants = new Ant[numAnts];
+            for (int i = 0; i < numAnts; ++i) {
+                ants[i] = new Ant(grid, antMemorySize);
+            }
         }
         items = new Item[numItems];
         for (int i = 0; i < numItems; ++i) {

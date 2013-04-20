@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class Ant extends GridObject {
 
     public boolean gotItem = false;
-    public AntMemory<Item> memory;
+    public AntMemory memory;
     
     Ant(Grid g, int antMemorySize) {
         super(g);
@@ -188,7 +188,7 @@ public class Ant extends GridObject {
         }
     }
 
-    private boolean validMove(int xCoord, int yCoord) {
+    public boolean validMove(int xCoord, int yCoord) {
         boolean valid = true;
         // check bounds
         if (xCoord < 0) {

@@ -21,28 +21,82 @@ public class SmartAnt extends Ant {
         int new_x = 0;
         int new_y = 0;
         int[] move = new int[2];
+        boolean validMove = false;
 
-        if (this.gotItem == true) {
-            Item closest = memory.get(0);
-            for (int i = 1; i < memory.size(); i++) {
-                closest = closer(closest,memory.get(i));
+        int counter = 0;
+        while (validMove == false) {
+            double bias = Math.random();
+            counter++;
+            if (this.gotItem == true && bias <= 0.6 && memory.size() > 0 && counter<=2) {
+                Item closest = memory.get(0);
+                for (int i = 1; i < memory.size(); i++) {
+                    closest = closer(closest, memory.get(i));
+                }
+
+                int xDiff = Math.abs(this.x - closest.getX());
+                int yDiff = Math.abs(this.y - closest.getY());
+
+                if (xDiff < yDiff) { // move up or down
+                    if (closest.getY() > y) {
+                        new_y = this.y + 1;
+                        new_x = this.x;
+                    } else {
+                        new_y = this.y - 1;
+                        new_x = this.x;
+                    }
+                } else { //move left or right
+                    if (closest.getX() > x) {
+                        new_y = this.y;
+                        new_x = this.x + 1;
+                    } else {
+                        new_y = this.y;
+                        new_x = this.x - 1;
+                    }
+                }
+                validMove = validMove(new_x, new_y);
+
+            } else {
+                new_x = new_y = 0;
+                int chooser = (int) (1 + Math.random() * 4);
+                //System.out.println(chooser);
+                //System.out.println(x + ":" + y);
+                switch (chooser) {
+                    case 1: // Move Up 1
+                        new_y = this.y + 1;
+                        new_x = this.x;
+                        break;
+                    case 2: // Move Down 1
+                        new_y = this.y - 1;
+                        new_x = this.x;
+                        break;
+                    case 3: // Move Right 1
+                        new_y = this.y;
+                        new_x = this.x + 1;
+                        break;
+                    case 4: // Move left 1
+                        new_y = this.y;
+                        new_x = this.x - 1;
+                        break;
+                }
+                validMove = validMove(new_x, new_y);
             }
-            return move;
-        } else {
-            move = super.getValidMove();
-            return move;
         }
+        //System.out.println(new_x + ":" + new_y);
+
+        move[0] = new_x;
+        move[1] = new_y;
+        return move;
     }
 
     //Euclidian distance of two objects in memory
     public Item closer(Item one, Item two) {
         int x1 = one.getX();
         int y1 = one.getY();
-        double diff1 = Math.sqrt(Math.pow((x1 - x), 2.0) + Math.pow((y1 - y), 2.0));
+        double diff1 = Math.sqrt(Math.pow((x1 - this.x), 2.0) + Math.pow((y1 - this.y), 2.0));
 
-        int y2 = two.getY();
         int x2 = two.getX();
-        double diff2 = Math.sqrt(Math.pow((x2 - x), 2.0) + Math.pow((y2 - y), 2.0));
+        int y2 = two.getY();
+        double diff2 = Math.sqrt(Math.pow((x2 - this.x), 2.0) + Math.pow((y2 - this.y), 2.0));
 
         if (diff1 > diff2) {
             return two;
