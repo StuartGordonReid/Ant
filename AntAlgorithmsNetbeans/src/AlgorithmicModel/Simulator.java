@@ -11,8 +11,8 @@ package AlgorithmicModel;
 public class Simulator {
 
     public static void main(String args[]) {
-        int iterations = 50;
-        AntAlgorithm ants = new AntAlgorithm(10, 50, 15);
+        int iterations = 150;
+        AntAlgorithm ants = new AntAlgorithm(20, 50, 15);
         
         ants.getGrid().printGrid();
         
