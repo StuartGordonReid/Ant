@@ -90,13 +90,25 @@ public class SmartAnt extends Ant {
 
     //Euclidian distance of two objects in memory
     public Item closer(Item one, Item two) {
+        
+        //RANDOM
+        
+        /* double random = Math.random();
+        if(random > 0.5) {
+            return one;
+        } else {
+            return two;
+        }*/
+        
+        //EUCLIDIAN
+        
         int x1 = one.getX();
         int y1 = one.getY();
-        double diff1 = Math.sqrt(Math.pow((x1 - this.x), 2.0) + Math.pow((y1 - this.y), 2.0));
+        double diff1 = Math.sqrt(Math.pow((this.x - x1), 2.0) + Math.pow((this.y - y1), 2.0));
 
         int x2 = two.getX();
         int y2 = two.getY();
-        double diff2 = Math.sqrt(Math.pow((x2 - this.x), 2.0) + Math.pow((y2 - this.y), 2.0));
+        double diff2 = Math.sqrt(Math.pow((this.x - x2), 2.0) + Math.pow((this.y - y2), 2.0));
 
         if (diff1 > diff2) {
             return two;

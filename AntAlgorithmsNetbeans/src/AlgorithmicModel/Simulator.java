@@ -12,7 +12,7 @@ public class Simulator {
 
     public static void main(String args[]) {
 
-        int gridSize = 50;
+        int gridSize = 40;
         int iterations = 100000;
         int numitems = (int) (gridSize * gridSize) / 20;
         int numants = (int) numitems / 10;
