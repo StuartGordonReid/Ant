@@ -53,30 +53,30 @@ public class ClusterFuck {
             ArrayList<Item> Neighbours9 = new ArrayList();
 
             for (int i = 0; i < Neighbours.size(); i++) {
-                Neighbours2 = findUnvisitedNeighbors(Neighbours.get(i));
-                for (int j = 0; j < Neighbours2.size(); j++) {
-                    Neighbours3 = findUnvisitedNeighbors(Neighbours2.get(j));
-                    for (int k = 0; k < Neighbours3.size(); k++) {
-                        Neighbours4 = findUnvisitedNeighbors(Neighbours3.get(k));
-                        for (int l = 0; l < Neighbours4.size(); l++) {
-                            Neighbours5 = findUnvisitedNeighbors(Neighbours4.get(l));
-                            for (int m = 0; m < Neighbours5.size(); m++) {
-                                Neighbours6 = findUnvisitedNeighbors(Neighbours5.get(m));
-                                for (int n = 0; n < Neighbours6.size(); n++) {
-                                    Neighbours7 = findUnvisitedNeighbors(Neighbours6.get(n));
-                                    for (int o = 0; o < Neighbours7.size(); o++) {
-                                        Neighbours8 = findUnvisitedNeighbors(Neighbours7.get(o));
-                                        for (int p = 0; p < Neighbours8.size(); p++) {
-                                            Neighbours9 = findUnvisitedNeighbors(Neighbours8.get(p));
-                                        }
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
+                Neighbours2.addAll(findUnvisitedNeighbors(Neighbours.get(i)));
             }
+            for (int j = 0; j < Neighbours2.size(); j++) {
+                Neighbours3.addAll(findUnvisitedNeighbors(Neighbours2.get(j)));
+            }
+            for (int k = 0; k < Neighbours3.size(); k++) {
+                Neighbours4.addAll(findUnvisitedNeighbors(Neighbours3.get(k)));
+            }
+            for (int l = 0; l < Neighbours4.size(); l++) {
+                Neighbours5.addAll(findUnvisitedNeighbors(Neighbours4.get(l)));
+            }
+            for (int m = 0; m < Neighbours5.size(); m++) {
+                Neighbours6.addAll(findUnvisitedNeighbors(Neighbours5.get(m)));
+            }
+            for (int n = 0; n < Neighbours6.size(); n++) {
+                Neighbours7.addAll(findUnvisitedNeighbors(Neighbours6.get(n)));
+            }
+            for (int o = 0; o < Neighbours7.size(); o++) {
+                Neighbours8.addAll(findUnvisitedNeighbors(Neighbours7.get(o)));
+            }
+            for (int p = 0; p < Neighbours8.size(); p++) {
+                Neighbours9 = findUnvisitedNeighbors(Neighbours8.get(p));
+            }
+
             Neighbours.addAll(Neighbours2);
             Neighbours.addAll(Neighbours3);
             Neighbours.addAll(Neighbours4);
