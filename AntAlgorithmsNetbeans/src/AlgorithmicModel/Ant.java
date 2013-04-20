@@ -4,7 +4,7 @@
  */
 package AlgorithmicModel;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -13,16 +13,12 @@ import java.util.ArrayList;
 public class Ant extends GridObject {
 
     public boolean gotItem = false;
-
-    Ant(Grid g) {
+    public AntMemory<GridObject> memory;
+    
+    Ant(Grid g, int antMemorySize) {
         super(g);
         this.objectType = "A";
-    }
-
-    Ant(int x, int y) {
-        super(x, y, "A");
-        this.x = x;
-        this.y = y;
+        this.memory = new AntMemory(antMemorySize);
     }
 
     public int[] getValidMove() {
@@ -211,5 +207,22 @@ public class Ant extends GridObject {
         }
 
         return valid;
+    }
+    
+    public class AntMemory<E> extends LinkedList<E> {
+        public int size;
+        
+        public AntMemory(int size){
+            this.size = size;
+        }
+        
+        @Override
+        public boolean add(E object){
+            boolean added = super.add(object);
+            while(added && size() > size){
+                super.remove();
+            }
+            return added;
+        }
     }
 }

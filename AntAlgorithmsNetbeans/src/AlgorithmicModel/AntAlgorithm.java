@@ -14,11 +14,11 @@ public class AntAlgorithm {
     private Ant[] ants;
     private Item[] items;
 
-    AntAlgorithm(int gridSize, int numItems, int numAnts) {
+    AntAlgorithm(int gridSize, int numItems, int numAnts, int antMemorySize) {
         grid = new Grid(gridSize);
         ants = new Ant[numAnts];
         for (int i = 0; i < numAnts; ++i)
-            ants[i] = new Ant(grid);
+            ants[i] = new Ant(grid, antMemorySize);
         items = new Item[numItems];
         for (int i = 0; i < numItems; ++i)
             items[i] = new Item(grid);
