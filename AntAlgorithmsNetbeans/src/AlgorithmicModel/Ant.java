@@ -14,6 +14,7 @@ public class Ant extends GridObject {
 
     public boolean gotItem = false;
     public AntMemory memory;
+    public int patchsize = 1;
 
     Ant(Grid g, int antMemorySize) {
         super(g);
@@ -180,8 +181,13 @@ public class Ant extends GridObject {
 
     public int getItemsSurroundingAnt() {
         int items = 0;
-        int[] xOffsets = {-1, 0, 1};
-        int[] yOffsets = {-1, 0, 1};
+        int size = (patchsize * 2) + 1;
+        int[] xOffsets = new int[size];
+        int[] yOffsets = new int[size];
+        for (int i = 0, j=-patchsize; i < size; ++i, ++j){
+            xOffsets[i] = j;
+            yOffsets[i] = j;
+        }
 
         for (int i = 0; i < xOffsets.length; i++) {
             for (int j = 0; j < yOffsets.length; j++) {
