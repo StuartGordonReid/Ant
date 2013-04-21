@@ -40,8 +40,9 @@ public class DBScan {
     public ArrayList<Cluster> scanGrid() {
         clusters = new ArrayList<Cluster>();
         GridObject object;
+        Cluster c;
         
-        // for every position
+        // for every position that is unvisited
         for (int i = 0; i < grid.getGridSize(); ++i){
             for (int j = 0; j < grid.getGridSize(); ++j){
 
@@ -62,8 +63,7 @@ public class DBScan {
                         // mark P as noise
                         object.status = 2;
                     } else {
-                        Cluster c = new Cluster();
-                        c.list = neighbors;
+                        c = new Cluster(neighbors);
                         expandCluster(object, neighbors, c);
                         clusters.add(c);
                     }
@@ -191,6 +191,10 @@ class Cluster {
     Cluster() {
         list = new ArrayList();
     }
+    
+    Cluster(ArrayList<Item> list){
+        this.list = list;
+    }
 
     public void add(Item x) {
         list.add(x);
@@ -214,73 +218,3 @@ class Cluster {
         }
     }
 }
-//                if (object.objectType.equals("I")){
-//                    Cluster c = new Cluster();
-//                    c.add(object);
-//                    clusters.add(c);
-//                }
-// remove clusters of size 0
-//        Iterator<Cluster> iter = clusters.iterator();
-//        while (iter.hasNext()){
-//            if (iter.next().isEmpty())
-//                iter.remove();
-//        }
-/*
- *expandCluster(P, NeighborPts, C, eps, MinPts)
- add P to cluster C
- for each point P' in NeighborPts 
- if P' is not visited
- mark P' as visited
- NeighborPts' = regionQuery(P', eps)
- if sizeof(NeighborPts') >= MinPts
- NeighborPts = NeighborPts joined with NeighborPts'
- if P' is not yet member of any cluster
- add P' to cluster C
- */
-/*public Cluster expandCluster(GridObject object, ArrayList<Item> neighbors, Cluster c) {
- System.out.println("expand Cluster");
- // add item to cluster
- c.add((Item)object);
-
- Iterator iter = neighbors.iterator();
- while (iter.hasNext()) {
- Item item = (Item) iter.next();
-
- // if item is not visited
- if (item.status != 1) {
- // mark visited
- item.status = 1;
- // get neighbors of neighbor
- ArrayList<Item> new_neighbors = getItemNeighbours(item);
-
- // if sizeof(NeighborPts') >= MinPts
- if (new_neighbors.size() >= clusterMin) {
- // perform a safe removal of elements using iter.remove
- Iterator iter2 = neighbors.iterator();
- while (iter2.hasNext()) {
- }
- neighbors.removeAll(new_neighbors);
- neighbors.addAll(new_neighbors);
- }
- }
- // if item is not yet a member of any cluster
- if (isInACluster(item)) {
- // add item to cluster
- c.add(item);
- }
-
- }
- return c;
- }
-
- /*   NEIGHBOURS
- *   (X+1,Y+1) | (X,Y+1) | (X+1,Y+1)
- *   --------------------------------
- *     (X-1,Y) |  (X,Y)  | (X+1,Y)
- *   --------------------------------
- *   (X-1,Y-1) | (X,Y-1) | (X+1,Y-1)
- */
-    /*
-     * regionQuery(P, eps)
-     return all points within P's eps-neighborhood
-     */

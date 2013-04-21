@@ -64,6 +64,14 @@ public class Grid {
         }
         System.out.println();
     }
+    
+    public void unvistAll(){
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                grid[i][j].status = 0;
+            }
+        }
+    }
 
     public Object[][] getGrid() {
         return grid;
