@@ -29,7 +29,10 @@ public class SmartLocationAnt extends Ant {
     public int[] getValidMove() {
         
         // (1)
-        LinkedList<Item> list = new LinkedList<Item>();
+        LinkedList<Item> list = new LinkedList();
+        for (Item item : memory.list){
+            list.add(item);
+        }
         LinkedList<Item> neighbors;
         for (Item item : memory.list){
             neighbors = getNeighborItems(item);
