@@ -81,12 +81,12 @@ public class Simulator {
     }
 
     public void runSims() {
-        String params = "\nStarting ant algorithm: \t"
+        String params = "\nStarting ant algorithm: "
                 //+ "Iterations: " + iterations + "\n"
-                + "Grid Size, " + gridSize + "x" + gridSize + "\t"
-                + "# items, " + numitems + "\t"
-                + "# ants, " + numants + "\t"
-                + "Memory, " + memorysize;
+                + " Grid Size- " + gridSize + "x" + gridSize + 
+                " # items- " + numitems + 
+                " # ants- " + numants + 
+                " Memory- " + memorysize;
 
         ArrayList<Result> results = new ArrayList();
 
@@ -125,24 +125,24 @@ public class Simulator {
 
                 System.out.println(results.get(h).tuning);
 
-                System.out.print("#Clusters:\t");
+                System.out.print("#Clusters,");
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(results.get(i).numClustersFormed + ",\t");
+                    System.out.print(results.get(i).numClustersFormed + ",");
                 }
                 System.out.println("");
-                System.out.print("#Avg Size:\t");
+                System.out.print("#Avg Size,");
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(results.get(i).avgClustersSizes + ",\t");
+                    System.out.print(results.get(i).avgClustersSizes + ",");
                 }
                 System.out.println("");
-                System.out.print("#Intra d:\t");
+                System.out.print("#Intra d,");
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(df.format(results.get(i).avgIntraDistance) + ",\t");
+                    System.out.print(df.format(results.get(i).avgIntraDistance) + ",");
                 }
                 System.out.println("");
-                System.out.print("#Inter d:\t");
+                System.out.print("#Inter d,");
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(df.format(results.get(i).avgInterDistance) + ",\t");
+                    System.out.print(df.format(results.get(i).avgInterDistance) + ",");
                 }
                 System.out.println("");
             }
