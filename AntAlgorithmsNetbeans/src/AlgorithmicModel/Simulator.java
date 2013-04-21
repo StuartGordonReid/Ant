@@ -40,15 +40,21 @@ public class Simulator {
             ants.run(iterations, resolution);
             ants.getGrid().printGrid();
 
-            ClusterFinder cf = new ClusterFinder(ants.getGrid(),minClusterSize);
+            ClusterFinder cf = new ClusterFinder(ants.getGrid(), minClusterSize);
             ClusterF clusters = cf.scanGrid();
-            for (int j = 0; j < clusters.list.size(); j++) {
-                for (int k = 0; k < clusters.list.get(j).size(); k++) {
-                    Item item = clusters.list.get(j).get(k);
-                    System.out.print(item.getX()+":"+item.getY()+",");
-                }
-                System.out.println();
-            }
+
+            ClusterAnalyzer analyzer = new ClusterAnalyzer(clusters, ants.getGrid());
+            analyzer.analyzeClusters();
+
+            System.out.println(analyzer.exportResults());
+
+            /*for (int j = 0; j < clusters.list.size(); j++) {
+             for (int k = 0; k < clusters.list.get(j).size(); k++) {
+             Item item = clusters.list.get(j).get(k);
+             System.out.print(item.getX()+":"+item.getY()+",");
+             }
+             System.out.println();
+             }*/
         }
 
         //DBScan the grid
