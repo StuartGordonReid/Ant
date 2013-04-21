@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 public class Simulator {
 
     ArrayList<ArrayList<Result>> setOfResults;
+    ArrayList<String> simulations;
     public int numExperiments;
     public int gridSize;
     public int iterations;
@@ -34,29 +35,18 @@ public class Simulator {
 
     public void runner() {
         setOfResults = new ArrayList();
+        simulations = new ArrayList();
 
-        //SMART ANT VERSION 1
         //Constants
-        numExperiments = 30;
+        numExperiments = 10;
         gridSize = 30;
         iterations = 8000;
         minClusterSize = 3;
         resolution = 1000;
-        numants = (int) (gridSize * gridSize) / 100;
+        numitems = (int) (gridSize * gridSize) / 10;
 
-        //Variable - test effect of #items on board
-        numitems = (int) (gridSize * gridSize) / 20;
-        runMemorySims();
-        numitems = (int) (gridSize * gridSize) / 10;
-        runMemorySims();
-        numitems = (int) (gridSize * gridSize) / 5;
-        runMemorySims();
-        
-        printResults();
-        setOfResults = new ArrayList();
-        
-        //New constant
-        numitems = (int) (gridSize * gridSize) / 10;
+        //SMART ANT VERSION 1
+        System.out.println("Experiment 1 - {Ants:Items} memory ant");
 
         //Variable - test effect of #ants on board
         numants = (int) numitems / 20;
@@ -69,25 +59,29 @@ public class Simulator {
         printResults();
         setOfResults = new ArrayList();
 
-        //SMART ANT VERSION 2    
+        //SMART ANT VERSION 2   
+        System.out.println("\nExperiment 1 - {Ants:Items} memory location ant");
+
     }
 
     public void runMemorySims() {
         int[] testMemorySize = {0, 1, 10, 100};
         for (int i = 0; i < testMemorySize.length; i++) {
+
             memorysize = testMemorySize[i];
+
+            String params = "\n{Sim:"
+                    //+ "Iterations: " + iterations + "\n"
+                    + " #I=" + numitems
+                    + " #A=" + numants
+                    + " Mem=" + memorysize + "}, ";
+            simulations.add(params);
+            
             runSims();
         }
     }
 
     public void runSims() {
-        String params = "\nStarting ant algorithm: "
-                //+ "Iterations: " + iterations + "\n"
-                + " Grid Size- " + gridSize + "x" + gridSize + 
-                " # items- " + numitems + 
-                " # ants- " + numants + 
-                " Memory- " + memorysize;
-
         ArrayList<Result> results = new ArrayList();
 
         for (int i = 0; i < numExperiments; i++) {
@@ -105,8 +99,7 @@ public class Simulator {
             results.add(new Result(analyzer.numberOfClusters,
                     analyzer.getAverageClusterSize(),
                     analyzer.getAverageInterClusterDistances(),
-                    analyzer.getAverageIntraClusterDistances(),
-                    params));
+                    analyzer.getAverageIntraClusterDistances()));
         }
 
         setOfResults.add(results);
@@ -115,6 +108,7 @@ public class Simulator {
     public void printResults() {
         ArrayList<Result> results;
         for (int g = 0; g < 4; g++) {
+            System.out.println(simulations.get(g));
             for (int h = g; h < setOfResults.size(); h += 4) {
 
                 results = setOfResults.get(h);
@@ -123,27 +117,33 @@ public class Simulator {
                 df.setMaximumFractionDigits(2);
                 df.setMinimumFractionDigits(2);
 
-                System.out.println(results.get(h).tuning);
+                int avgClusters = 0;
+                for (int i = 0; i < results.size(); i++) {
+                    avgClusters += results.get(i).numClustersFormed;
+                }
+                avgClusters = avgClusters / results.size();
+                System.out.print(avgClusters + ",");
 
-                System.out.print("#Clusters,");
+                int avgSize = 0;
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(results.get(i).numClustersFormed + ",");
+                    avgSize += results.get(i).avgClustersSizes;
                 }
-                System.out.println("");
-                System.out.print("#Avg Size,");
+                avgSize = avgSize / results.size();
+                System.out.print(avgSize + ",");
+
+                double avgIntraDistance = 0.0;
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(results.get(i).avgClustersSizes + ",");
+                    avgIntraDistance += results.get(i).avgIntraDistance;
                 }
-                System.out.println("");
-                System.out.print("#Intra d,");
+                avgIntraDistance = avgIntraDistance / results.size();
+                System.out.print(df.format(avgIntraDistance) + ",");
+
+                double avgInterDistance = 0.0;
                 for (int i = 0; i < results.size(); i++) {
-                    System.out.print(df.format(results.get(i).avgIntraDistance) + ",");
+                    avgInterDistance += results.get(i).avgInterDistance;
                 }
-                System.out.println("");
-                System.out.print("#Inter d,");
-                for (int i = 0; i < results.size(); i++) {
-                    System.out.print(df.format(results.get(i).avgInterDistance) + ",");
-                }
+                avgInterDistance = avgInterDistance / results.size();
+                System.out.print(df.format(avgInterDistance) + ",");
                 System.out.println("");
             }
         }
@@ -161,8 +161,7 @@ class Result {
     double avgInterDistance;
     double avgIntraDistance;
 
-    Result(int n, int s, double inter, double intra, String params) {
-        tuning = params;
+    Result(int n, int s, double inter, double intra) {
         numClustersFormed = n;
         avgClustersSizes = s;
         avgInterDistance = inter;
