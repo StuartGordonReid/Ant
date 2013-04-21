@@ -23,7 +23,7 @@ public class Simulator {
         int iterations = 10000;
         int numitems = (int) (gridSize * gridSize) / 20;
         int numants = (int) numitems / 10;
-        int memorysize = 2;
+        int memorysize = 5;
         int resolution = 1000;
         int minClusterSize = 3;
 
