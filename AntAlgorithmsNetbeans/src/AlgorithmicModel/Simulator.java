@@ -19,19 +19,19 @@ public class Simulator {
     public static void main(String args[]) {
 
         int numExperiments = 1;
-        int gridSize = 50;
+        int gridSize = 35;
         int iterations = 10000;
-        int numitems = (int) (gridSize * gridSize) / 20;
+        int numitems = (int) (gridSize * gridSize) / 10;
         int numants = (int) numitems / 10;
-        int memorysize = 5;
+        int memorysize = 10;
         int resolution = 1000;
-        int minClusterSize = 3;
+        int minClusterSize = 4;
 
 
         System.out.println("Starting simulation with: \n"
                 + "Iterations: " + iterations + "\n"
                 + "Grid Size: " + gridSize + "x" + gridSize + "\n"
-                + "Number of items (5% of GridSize): " + numitems + "\n"
+                + "Number of items (10% of GridSize): " + numitems + "\n"
                 + "Number of ants (1 Ant: 10 Items): " + numants + "\n"
                 + "Memory Size: " + memorysize);
 
