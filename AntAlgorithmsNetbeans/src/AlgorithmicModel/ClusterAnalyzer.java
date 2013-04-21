@@ -92,11 +92,11 @@ public class ClusterAnalyzer {
     }
 
     public double averageDouble(ArrayList<Double> source) {
-        double sumOfSums = 0.0;
+        double average = 0.0;
         for (int i = 0; i < source.size(); i++) {
-            sumOfSums += source.get(i);
+            average += source.get(i);
         }
-        return sumOfSums; // / source.size();
+        return average / source.size();
     }
 
     public int averageInt(ArrayList<Integer> source) {
@@ -137,5 +137,17 @@ public class ClusterAnalyzer {
                 + df.format(averageDouble(intraClusterDistances)) + "\n";
         results += "\n";
         return results;
+    }
+    
+    public int getAverageClusterSize(){
+        return averageInt(clusterSizes);
+    }
+    
+    public double getAverageIntraClusterDistances() {
+        return averageDouble(intraClusterDistances);
+    }
+    
+    public double getAverageInterClusterDistances() {
+        return interClusterDistance;
     }
 }
