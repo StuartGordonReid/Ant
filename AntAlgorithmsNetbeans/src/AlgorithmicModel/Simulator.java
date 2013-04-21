@@ -19,7 +19,7 @@ public class Simulator {
     public static void main(String args[]) {
 
         int numExperiments = 1;
-        int gridSize = 30;
+        int gridSize = 100;
         int iterations = 100000;
         int numitems = (int) (gridSize * gridSize) / 20;
         int numants = (int) numitems / 10;
@@ -40,7 +40,7 @@ public class Simulator {
             ants.run(iterations, resolution);
             ants.getGrid().printGrid();
 
-            ClusterFuck cf = new ClusterFuck(ants.getGrid(),minClusterSize);
+            ClusterFinder cf = new ClusterFinder(ants.getGrid(),minClusterSize);
             ClusterF clusters = cf.scanGrid();
             for (int j = 0; j < clusters.list.size(); j++) {
                 for (int k = 0; k < clusters.list.get(j).size(); k++) {

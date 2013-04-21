@@ -7,16 +7,17 @@ package AlgorithmicModel;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+
 /**
  *
  * @author stuart
  */
-public class ClusterFuck {
+public class ClusterFinder {
 
     Grid grid;
     int minSize;
 
-    ClusterFuck(Grid g, int min) {
+    ClusterFinder(Grid g, int min) {
         grid = g;
         minSize = min;
     }
@@ -139,7 +140,6 @@ public class ClusterFuck {
         }
     }
 }
-
 class ClusterF {
 
     ArrayList<ArrayList<Item>> list;
