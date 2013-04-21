@@ -6,6 +6,7 @@ package AlgorithmicModel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -16,13 +17,15 @@ public class DBScan {
     private Grid grid;
     private int clusterMin;
     ArrayList<Cluster> clusters;
+    int epsilon;
 
-    DBScan(Grid g, int c) {
-        grid = g;
-        clusterMin = c;
+    DBScan(Grid g, int c, int epsilon) {
+        this.grid = g;
+        this.clusterMin = c;
+        this.epsilon = epsilon;
     }
 
-    /*
+    /* PSEUDO CODE
      *DBSCAN(D, eps, MinPts)
      C = 0
      for each unvisited point P in dataset D
@@ -51,12 +54,19 @@ public class DBScan {
                 if (object.objectType.equals("I")) {
                     ArrayList<Item> neighbors = getItemNeighbours((Item) object);
 
-                    if (neighbors.size() > 0) {
-                        object.status = 2;
-                    } else {
-                        Cluster c = new Cluster();
-                        c.list = neighbors;
-                        clusters.add(c);
+                    //System.out.println(object.x + "," + object.y + ": " + neighbors);
+
+                    // check neighborhood items size
+                    if (neighbors.size() < clusterMin - 1) {
+                        // mark P as noise
+
+                        if (neighbors.size() > 0) {
+                            object.status = 2;
+                        } else {
+                            Cluster c = new Cluster();
+                            c.list = neighbors;
+                            clusters.add(c);
+                        }
                     }
                 }
             }
@@ -64,16 +74,78 @@ public class DBScan {
         return clusters;
     }
 
-    public Cluster expandCluster(ArrayList<Item> neighbours, Cluster cluster) {
+    /* PSEUDO CODE
+     *expandCluster(P, NeighborPts, C, eps, MinPts)
+     add P to cluster C
+     for each point P' in NeighborPts 
+     if P' is not visited
+     mark P' as visited
+     NeighborPts' = regionQuery(P', eps)
+     if sizeof(NeighborPts') >= MinPts
+     NeighborPts = NeighborPts joined with NeighborPts'
+     if P' is not yet member of any cluster
+     add P' to cluster C
+     */
+    public Cluster expandCluster(GridObject object, ArrayList<Item> unsafe_neighbors, Cluster c) {
+        // add item to cluster
+        c.add((Item) object);
 
+        // create intermediate list
+        CopyOnWriteArrayList<Item> neighbors = new CopyOnWriteArrayList<Item>(unsafe_neighbors);
+        for (Item item : neighbors) {
+            if (item.status != 1) {
+                // mark visited
+                item.status = 1;
+                // get neighbors of neighbor
+                ArrayList<Item> new_neighbors = getItemNeighbours(item);
+
+                // if sizeof(NeighborPts') >= MinPts
+                if (new_neighbors.size() >= clusterMin - 1) {
+                    neighbors.removeAll(new_neighbors);
+                    neighbors.addAll(new_neighbors);
+                }
+            }
+            // if item is not yet a member of any cluster
+            if (!isInACluster(item)) {
+                // add item to cluster
+                c.add(item);
+            }
+        }
+
+        // restore unsafe_neighbors reference
+        unsafe_neighbors.clear();
+        for (Item i : neighbors) {
+            unsafe_neighbors.add(i);
+        }
+
+        return c;
+    }
+
+    /*   NEIGHBOURS for epsilon == 1
+     *   (X+1,Y+1) | (X,Y+1) | (X+1,Y+1)
+     *   --------------------------------
+     *     (X-1,Y) |  (X,Y)  | (X+1,Y)
+     *   --------------------------------
+     *   (X-1,Y-1) | (X,Y-1) | (X+1,Y-1)
+     */
+    /* PSEUDO CODE
+     * regionQuery(P, eps)
+     return all points within P's eps-neighborhood
+     */
+    public Cluster expandCluster(ArrayList<Item> neighbours, Cluster cluster) {
 
         return cluster;
     }
 
     public ArrayList<Item> getItemNeighbours(Item item) {
         ArrayList<Item> neighbours = new ArrayList();
-        int[] xOffsets = {-1, 0, 1};
-        int[] yOffsets = {-1, 0, 1};
+        int size = (epsilon * 2) + 1;
+        int[] xOffsets = new int[size];
+        int[] yOffsets = new int[size];
+        for (int i = 0, j = -epsilon; i < size; ++i, ++j) {
+            xOffsets[i] = j;
+            yOffsets[i] = j;
+        }
 
         for (int i = 0; i < xOffsets.length; i++) {
             for (int j = 0; j < yOffsets.length; j++) {
@@ -111,6 +183,8 @@ public class DBScan {
             }
         }
         return found;
+
+
     }
 }
 

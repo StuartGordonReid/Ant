@@ -19,11 +19,11 @@ public class Simulator {
     public static void main(String args[]) {
 
         int numExperiments = 1;
-        int gridSize = 100;
-        int iterations = 100000;
+        int gridSize = 50;
+        int iterations = 10000;
         int numitems = (int) (gridSize * gridSize) / 20;
         int numants = (int) numitems / 10;
-        int memorysize = 0;
+        int memorysize = 2;
         int resolution = 1000;
         int minClusterSize = 3;
 
@@ -52,5 +52,8 @@ public class Simulator {
         }
 
         //DBScan the grid
+        // DBScan the grid
+        //DBScan scan = new DBScan(ants.getGrid(), minClusterSize, epsilon);
+        //ArrayList<Cluster> clusters = scan.scanGrid();
     }
 }
