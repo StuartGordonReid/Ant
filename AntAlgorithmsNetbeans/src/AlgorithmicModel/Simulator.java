@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class Simulator {
 
     public static void main(String args[]) {
-
+/*
         int numExperiments = 1;
         int gridSize = 50;
         int iterations = 10000;
@@ -50,10 +50,52 @@ public class Simulator {
                 System.out.println();
             }
         }
+        */
 
-        //DBScan the grid
+        
+        
+        
+        
+        
+        
+        
+        int gridSize = 50;
+        int iterations = 75000;
+        int numitems = (int) (gridSize * gridSize) / 20;
+        int numants = (int) numitems / 10;
+        int memorysize = 0;
+        int resolution = (int) (iterations * 0.075);
+        int minClusterSize = 3;
+        int epsilon = 5;//(int) (gridSize * 0.08); // % of the gridsize defines a 'neighborhood'
+
+        System.out.println("Starting simulation with: \n===\n"
+                + "Iterations: " + iterations + "\n"
+                + "Grid Size: " + gridSize + "x" + gridSize + "\n"
+                + "Number of items (5% of GridSize): " + numitems + "\n"
+                + "Number of ants (1 Ant: 10 Items): " + numants + "\n"
+                + "Memory Size: " + memorysize + "\n"
+                + "Epsilon neighbourhood: " + epsilon);
+        
+        AntAlgorithm ants = new AntAlgorithm(gridSize, numitems, numants, memorysize);
+        ants.run(iterations, resolution);
+        
         // DBScan the grid
-        //DBScan scan = new DBScan(ants.getGrid(), minClusterSize, epsilon);
-        //ArrayList<Cluster> clusters = scan.scanGrid();
+        DBScan scan = new DBScan(ants.getGrid(), minClusterSize, epsilon);
+        ArrayList<Cluster> clusters = scan.scanGrid();
+        
+        // Print results to console
+        System.out.println("Printing clusters\n===");
+        System.out.println("Number of clusters: " + clusters.size() + "\n");
+        for (Cluster c : clusters){
+            System.out.println(c);
+        }
+        
+        System.out.println("Completed simulation with: \n===\n"
+                + "Iterations: " + iterations + "\n"
+                + "Grid Size: " + gridSize + "x" + gridSize + "\n"
+                + "Number of items (5% of GridSize): " + numitems + "\n"
+                + "Number of ants (1 Ant: 10 Items): " + numants + "\n"
+                + "Memory Size: " + memorysize + "\n"
+                + "Epsilon neighbourhood: " + epsilon);
     }
 }
