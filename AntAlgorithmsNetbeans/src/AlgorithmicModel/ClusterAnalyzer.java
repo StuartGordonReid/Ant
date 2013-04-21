@@ -16,6 +16,7 @@ public class ClusterAnalyzer {
     ClusterF clusters;
     Grid grid;
     int numberOfClusters;
+    int clusteredItems;
     ArrayList<Integer> clusterSizes; //Size of each cluster
     ArrayList<Double> intraClusterDistances; //Density of each cluster
     double interClusterDistance; //Distances across all clusters
@@ -28,6 +29,14 @@ public class ClusterAnalyzer {
         //analyzeClusters(clusters);
     }
 
+    public int getClusteredItems() {
+        int clustered = 0;
+        for(int i=0; i<clusterSizes.size(); i++){
+            clustered += clusterSizes.get(i);
+        }
+        return clustered;
+    }
+    
     public void analyzeClusters() {
         numberOfClusters = clusters.list.size();
         for (int i = 0; i < numberOfClusters; i++) {
@@ -39,13 +48,16 @@ public class ClusterAnalyzer {
 
     public double calcIntraClusterDistances(ArrayList<Item> cluster) {
         double intraClusterDistance = 0.0;
+        int distances = 0;
         //For each item in cluster
         for (int i = 0; i < cluster.size() - 1; i++) {
             for (int j = 1; j < cluster.size(); j++) {
-                intraClusterDistance += Math.pow(Math.abs(distance(cluster.get(i), cluster.get(j))), 2.0);
+                distances++;
+                //intraClusterDistance += Math.abs(distance(cluster.get(i), cluster.get(j)));
+                intraClusterDistance += Math.pow(distance(cluster.get(i), cluster.get(j)), 2.0);
             }
         }
-        return intraClusterDistance / cluster.size();
+        return intraClusterDistance / distances;
     }
 
     public double distance(Item one, Item two) {
@@ -78,9 +90,10 @@ public class ClusterAnalyzer {
 
             //Add the squared distance between those two items
             distance += Math.pow(distance(selected, closest), 2.0);
+            //distance += distance(selected, closest);
         }
 
-        return distance / numberOfClusters;
+        return distance;
     }
 
     public ArrayList<Double> getIntraClusterDistances() {
@@ -92,19 +105,27 @@ public class ClusterAnalyzer {
     }
 
     public double averageDouble(ArrayList<Double> source) {
-        double average = 0.0;
-        for (int i = 0; i < source.size(); i++) {
-            average += source.get(i);
+        if (!source.isEmpty()) {
+            double average = 0.0;
+            for (int i = 0; i < source.size(); i++) {
+                average += source.get(i);
+            }
+            return average / source.size();
+        } else {
+            return 0;
         }
-        return average / source.size();
     }
 
     public int averageInt(ArrayList<Integer> source) {
-        int average = 0;
-        for (int i = 0; i < source.size(); i++) {
-            average += source.get(i);
+        if (!source.isEmpty()) {
+            int average = 0;
+            for (int i = 0; i < source.size(); i++) {
+                average += source.get(i);
+            }
+            return average / source.size();
+        } else {
+            return 0;
         }
-        return average / source.size();
     }
 
     public String exportResults() {
@@ -138,15 +159,15 @@ public class ClusterAnalyzer {
         results += "\n";
         return results;
     }
-    
-    public int getAverageClusterSize(){
+
+    public int getAverageClusterSize() {
         return averageInt(clusterSizes);
     }
-    
+
     public double getAverageIntraClusterDistances() {
         return averageDouble(intraClusterDistances);
     }
-    
+
     public double getAverageInterClusterDistances() {
         return interClusterDistance;
     }

@@ -10,16 +10,27 @@ package AlgorithmicModel;
  */
 public class AntAlgorithm {
 
+    private int speedOfAnts;
     private Grid grid;
     private Ant[] ants;
     private Item[] items;
+    public int typeOfAnt;
 
-    AntAlgorithm(int gridSize, int numItems, int numAnts, int antMemorySize) {
+    AntAlgorithm(int gridSize, int numItems, int numAnts, int antMemorySize, int typeOfA, int speed) {
+        speedOfAnts = speed;
+        typeOfAnt = typeOfA;
         grid = new Grid(gridSize);
-        if(antMemorySize > 0) {
-            ants = new SmartAnt[numAnts];
-            for (int i = 0; i < numAnts; ++i) {
-                ants[i] = new SmartAnt(grid, antMemorySize);
+        if (true) {
+            if (typeOfA == 0) {
+                ants = new SmartAnt[numAnts];
+                for (int i = 0; i < numAnts; ++i) {
+                    ants[i] = new SmartAnt(grid, antMemorySize);
+                }
+            } else {
+                ants = new SmartLocationAnt[numAnts];
+                for (int i = 0; i < numAnts; ++i) {
+                    ants[i] = new SmartLocationAnt(grid, antMemorySize);
+                }
             }
         } else {
             ants = new Ant[numAnts];
@@ -73,12 +84,12 @@ public class AntAlgorithm {
 
     public void run(int iterations) {
         grid.printGrid();
-        int resolution = (int) iterations/10;
+        int resolution = (int) iterations / 10;
 
         // for each iteration
         for (int i = 0; i < iterations; i++) {
             // print grid at some resolution
-            if (i % resolution == 0){
+            if (i % resolution == 0) {
                 grid.printGrid();
                 System.out.println();
             }
@@ -102,9 +113,11 @@ public class AntAlgorithm {
             }
             // for each ant
             for (int j = 0; j < ants.length; j++) {
-                // get valid move position
-                int[] pos = ants[j].getValidMove();
-                ants[j].move(pos);
+                for (int k = 0; k < speedOfAnts; k++) {
+                    // get valid move position
+                    int[] pos = ants[j].getValidMove();
+                    ants[j].move(pos);
+                }
             }
         }
     }

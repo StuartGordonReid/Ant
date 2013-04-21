@@ -53,7 +53,7 @@ public class SmartLocationAnt extends Ant {
         while (validMove == false) {
             double bias = Math.random();
             counter++;
-            if (this.gotItem == true && bias <= 0.5 && memory.size() > 0 && counter < 1) {
+            if (this.gotItem == true && bias <= 0.5 && memory.size() > 0 && counter <= 1) {
                 
                 // (2)
                 Item closest = list.get(0);
