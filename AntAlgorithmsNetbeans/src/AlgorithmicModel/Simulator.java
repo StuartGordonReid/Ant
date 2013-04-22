@@ -25,25 +25,35 @@ public class Simulator {
     public int numitems;
     public int numants;
     public int memorysize;
-    public int resolution;
+    public int printGridResolution;
     public int minClusterSize;
     public int version;
     public int speedOfAnts;
 
     public static void main(String args[]) {
         Simulator sims = new Simulator();
-        sims.runner();
+        sims.runDifferentIterations();
+
+    }
+    
+    public void runDifferentIterations(){
+        int[] iterationArr = {50, 300, 750};
+        for (int i : iterationArr){
+            iterations = i;
+            System.out.println("\n\nRunning with ITERATIONS = " + iterations + "\n========================\n,");
+            this.runner();
+        }
     }
 
     public void runner() {
         //Constants
 
         speedOfAnts = 1;
-        numExperiments = 20;
+        numExperiments = 30;
         gridSize = 35;
-        iterations = 200;
+        iterations = 150;
         minClusterSize = 5;
-        resolution = 1000;
+        printGridResolution = (int) (iterations * 0.05);
         numitems = (int) (gridSize * gridSize) / 10;
 
         //EXPERIMENT 1
@@ -51,7 +61,7 @@ public class Simulator {
         //---------------------------------------------------------------------------------
         //SMART ANT VERSION 1
         version = 0;
-        System.out.println("Experiment 1 - {Ants:Items} memory ant");
+        System.out.println("Experiment 1 - {Ants:Items} memory ant,");
         setOfResults = new ArrayList();
         simulations = new ArrayList();
 
@@ -63,7 +73,7 @@ public class Simulator {
         //SMART ANT VERSION 2   
 
         version = 1;
-        System.out.println("\nExperiment 1 - {Ants:Items} memory location ant");
+        System.out.println("\nExperiment 1 - {Ants:Items} memory location ant,");
         setOfResults = new ArrayList();
         simulations = new ArrayList();
 
@@ -79,7 +89,7 @@ public class Simulator {
         numants = (int) numitems / 10;
 
         version = 0;
-        System.out.println("\nExperiment 2 - {Speed of Ants} memory ant");
+        System.out.println("\nExperiment 2 - {Speed of Ants} memory ant,");
         setOfResults = new ArrayList();
         simulations = new ArrayList();
 
@@ -90,7 +100,7 @@ public class Simulator {
         //SMART ANT VERSION 2   
 
         version = 1;
-        System.out.println("\nExperiment 2 - {Speed of Ants} memory location ant");
+        System.out.println("\nExperiment 2 - {Speed of Ants} memory location ant,");
         setOfResults = new ArrayList();
         simulations = new ArrayList();
 
@@ -100,31 +110,19 @@ public class Simulator {
     }
 
     public void experimentOne() {
-        numants = (int) numitems / 21;
-        runMemorySims();
-        numants = (int) numitems / 18;
-        runMemorySims();
-        numants = (int) numitems / 15;
-        runMemorySims();
-        numants = (int) numitems / 12;
-        runMemorySims();
-        numants = (int) numitems / 9;
-        runMemorySims();
-        numants = (int) numitems / 6;
-        runMemorySims();
-        numants = (int) numitems / 3;
-        runMemorySims();
+        double[] antNums = {0.02, 0.05, 0.1, 0.3};
+        for (double d : antNums){
+            numants = (int) (numitems * d);
+            runMemorySims();
+        }
     }
 
     public void experimentTwo() {
-        speedOfAnts = 1;
-        runMemorySims();
-        speedOfAnts = 2;
-        runMemorySims();
-        speedOfAnts = 3;
-        runMemorySims();
-        speedOfAnts = 4;
-        runMemorySims();
+        int[] antSpeeds = {1,2,3,4};
+        for (int i : antSpeeds){
+            speedOfAnts = i;
+            runMemorySims();
+        }
     }
 
     public void runMemorySims() {
@@ -150,7 +148,7 @@ public class Simulator {
             //System.out.println("Starting simulation " + i);
 
             AntAlgorithm ants = new AntAlgorithm(gridSize, numitems, numants, memorysize, version, speedOfAnts);
-            ants.run(iterations, resolution);
+            ants.run(iterations, printGridResolution);
 
             ClusterFinder cf = new ClusterFinder(ants.getGrid(), minClusterSize);
             ClusterF clusters = cf.scanGrid();
@@ -158,7 +156,8 @@ public class Simulator {
             ClusterAnalyzer analyzer = new ClusterAnalyzer(clusters, ants.getGrid());
             analyzer.analyzeClusters();
 
-            results.add(new Result(analyzer.numberOfClusters,
+            results.add(new Result(
+                    analyzer.numberOfClusters,
                     analyzer.getClusteredItems(),
                     analyzer.getAverageInterClusterDistances(),
                     analyzer.getAverageIntraClusterDistances(),
@@ -170,17 +169,22 @@ public class Simulator {
 
     public void printResultsSpeed() {
         ArrayList<Result> results;
+        // loop over memory values {0,1,10,100}
         for (int g = 0; g < 4; g++) {
             System.out.println(simulations.get(g));
             for (int h = g; h < setOfResults.size(); h += 4) {
 
                 results = setOfResults.get(h);
-
-                System.out.print(results.get(0).speed + ",\t");
-
+                
                 DecimalFormat df = new DecimalFormat();
                 df.setMaximumFractionDigits(2);
                 df.setMinimumFractionDigits(2);
+                
+                double ratio = (((double) results.get(0).numItems) / ((double) results.get(0).numAnts));
+                System.out.print(df.format(ratio) + ",\t");
+                System.out.print(results.get(0).numAnts + ":" + results.get(0).numItems + ",\t");
+                System.out.print(results.get(0).speed + ",\t");
+
 
                 int avgClusters = 0;
                 for (int i = 0; i < results.size(); i++) {
@@ -216,17 +220,21 @@ public class Simulator {
 
     public void printResultsAntRatio() {
         ArrayList<Result> results;
+        // loop over memory values {0,1,10,100}
         for (int g = 0; g < 4; g++) {
             System.out.println(simulations.get(g));
             for (int h = g; h < setOfResults.size(); h += 4) {
 
                 results = setOfResults.get(h);
-
-                System.out.print(results.get(0).numAnts + ":" + results.get(0).numItems + ",\t");
-
+                
                 DecimalFormat df = new DecimalFormat();
                 df.setMaximumFractionDigits(2);
                 df.setMinimumFractionDigits(2);
+                df.setGroupingSize(5); //how many digits before they are grouped for easier reading using a comma
+                
+                double ratio = (((double) results.get(0).numItems) / ((double) results.get(0).numAnts));
+                System.out.print(df.format(ratio) + ",\t");
+                System.out.print(results.get(0).numAnts + ":" + results.get(0).numItems + ",\t");
 
                 int avgClusters = 0;
                 for (int i = 0; i < results.size(); i++) {

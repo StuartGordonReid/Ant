@@ -83,16 +83,11 @@ public class AntAlgorithm {
     }
 
     public void run(int iterations) {
-        grid.printGrid();
-        int resolution = (int) iterations / 10;
+        //grid.printGrid();
+        //int resolution = (int) iterations / 10;
 
         // for each iteration
         for (int i = 0; i < iterations; i++) {
-            // print grid at some resolution
-            if (i % resolution == 0) {
-                grid.printGrid();
-                System.out.println();
-            }
             // for each ant
             for (int j = 0; j < ants.length; j++) {
                 // get valid move position
@@ -104,13 +99,18 @@ public class AntAlgorithm {
 
     public void run(int iterations, int resolution) {
         // for each iteration
-        for (int i = 0; i <= iterations; i++) {
+        for (int i = 0; i < iterations; i++) {
             // print grid at some resolution
-            if (i % resolution == 0) {
-                //System.out.println("AFTER "+i+" ITERATIONS:");
-                //grid.printGrid();
-                //System.out.println();
-            }
+//            if (i % resolution == 0) {
+//                System.out.println("AFTER "+i+" ITERATIONS:");
+//                grid.printGrid();
+//                System.out.println();
+//            }
+//            if (i == iterations -1 && Math.random() < 0.005) {
+//                System.out.println("AFTER "+i+" ITERATIONS:");
+//                grid.printGrid();
+//                System.out.println();
+//            }
             // for each ant
             for (int j = 0; j < ants.length; j++) {
                 for (int k = 0; k < speedOfAnts; k++) {
