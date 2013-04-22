@@ -27,7 +27,7 @@ public class SmartAnt extends Ant {
         while (validMove == false) {
             double bias = Math.random();
             counter++;
-            if (this.gotItem == true && bias <= 0.5 && memory.size() > 0 && counter <= 1) {
+            if (this.gotItem == true && bias <= 0.55 && memory.size() > 0 && counter <= 2) {
                 Item closest = memory.get(0);
                 for (int i = 1; i < memory.size(); i++) {
                     closest = closer(closest, memory.get(i));

@@ -39,64 +39,70 @@ public class Simulator {
         //Constants
 
         speedOfAnts = 1;
-        numExperiments = 20;
+        numExperiments = 25;
         gridSize = 35;
-        iterations = 200;
+        iterations = 700;
         minClusterSize = 5;
-        resolution = 1000;
-        numitems = (int) (gridSize * gridSize) / 10;
-
-        //EXPERIMENT 1
-        //================================================================================
-        //---------------------------------------------------------------------------------
-        //SMART ANT VERSION 1
+        resolution = 50000;
+        numitems = (int) (gridSize * gridSize) / 20;
         version = 0;
-        System.out.println("Experiment 1 - {Ants:Items} memory ant");
-        setOfResults = new ArrayList();
-        simulations = new ArrayList();
 
-        //Variable - test effect of #ants on board
-        experimentOne();
-        printResultsAntRatio();
+        AntAlgorithm ants = new AntAlgorithm(gridSize, numitems, 5, 0, 0, 1);
+        ants.getGrid().printGrid();
+        ants.run(10000, resolution);
+        ants.getGrid().printGrid();
+        /*
+         //EXPERIMENT 1
+         //================================================================================
+         //---------------------------------------------------------------------------------
+         //SMART ANT VERSION 1
+         version = 0;
+         System.out.println("Experiment 1 - {Ants:Items} memory ant");
+         setOfResults = new ArrayList();
+         simulations = new ArrayList();
 
-        //---------------------------------------------------------------------------------
-        //SMART ANT VERSION 2   
+         //Variable - test effect of #ants on board
+         experimentOne();
+         printResultsAntRatio();
 
-        version = 1;
-        System.out.println("\nExperiment 1 - {Ants:Items} memory location ant");
-        setOfResults = new ArrayList();
-        simulations = new ArrayList();
+         //---------------------------------------------------------------------------------
+         //SMART ANT VERSION 2   
 
-        experimentOne();
-        printResultsAntRatio();
+         version = 1;
+         System.out.println("\nExperiment 1 - {Ants:Items} memory location ant");
+         setOfResults = new ArrayList();
+         simulations = new ArrayList();
 
-        //EXPERIMENT 2
-        //================================================================================
-        //---------------------------------------------------------------------------------
-        //SMART ANT VERSION 1
+         experimentOne();
+         printResultsAntRatio();
 
-        //New constant value
-        numants = (int) numitems / 10;
+         //EXPERIMENT 2
+         //================================================================================
+         //---------------------------------------------------------------------------------
+         //SMART ANT VERSION 1
 
-        version = 0;
-        System.out.println("\nExperiment 2 - {Speed of Ants} memory ant");
-        setOfResults = new ArrayList();
-        simulations = new ArrayList();
+         //New constant value
+         numants = (int) numitems / 10;
 
-        experimentTwo();
-        printResultsSpeed();
+         version = 0;
+         System.out.println("\nExperiment 2 - {Speed of Ants} memory ant");
+         setOfResults = new ArrayList();
+         simulations = new ArrayList();
 
-        //---------------------------------------------------------------------------------
-        //SMART ANT VERSION 2   
+         experimentTwo();
+         printResultsSpeed();
 
-        version = 1;
-        System.out.println("\nExperiment 2 - {Speed of Ants} memory location ant");
-        setOfResults = new ArrayList();
-        simulations = new ArrayList();
+         //---------------------------------------------------------------------------------
+         //SMART ANT VERSION 2   
 
-        experimentTwo();
-        printResultsSpeed();
+         version = 1;
+         System.out.println("\nExperiment 2 - {Speed of Ants} memory location ant");
+         setOfResults = new ArrayList();
+         simulations = new ArrayList();
 
+         experimentTwo();
+         printResultsSpeed();
+         */
     }
 
     public void experimentOne() {

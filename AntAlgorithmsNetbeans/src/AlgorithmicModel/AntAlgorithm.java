@@ -20,7 +20,7 @@ public class AntAlgorithm {
         speedOfAnts = speed;
         typeOfAnt = typeOfA;
         grid = new Grid(gridSize);
-        if (true) {
+        if (antMemorySize > 0) {
             if (typeOfA == 0) {
                 ants = new SmartAnt[numAnts];
                 for (int i = 0; i < numAnts; ++i) {
